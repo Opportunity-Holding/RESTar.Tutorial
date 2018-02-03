@@ -161,7 +161,10 @@ Implementing it is simple. Just like we would with a database class, we create a
 namespace RESTarTutorial
 {
     using RESTar;
+    using Starcounter;
     using static RESTar.Methods;
+    using System.Linq;
+    using System.Collections.Generic;
 
     [RESTar(GET)]
     public class SuperHeroReport : ISelector<SuperHeroReport>
@@ -180,7 +183,9 @@ namespace RESTarTutorial
             {
                 new SuperHeroReport
                 {
-                    NumberOfSuperHeroes = Db.SQL<long>("SELECT COUNT(t) FROM RESTarTutorial.SuperHero t").FirstOrDefault(),
+                    NumberOfSuperHeroes = Db
+                        .SQL<long>("SELECT COUNT(t) FROM RESTarTutorial.SuperHero t")
+                        .FirstOrDefault(),
                     FirstSuperHeroInserted = superHeroesOrdered.FirstOrDefault(),
                     LastSuperHeroInserted = superHeroesOrdered.LastOrDefault(),
                     LongestOriginStoryLength = superHeroesOrdered
