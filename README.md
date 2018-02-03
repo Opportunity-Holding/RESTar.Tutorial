@@ -67,3 +67,30 @@ Output:
     "SuperHeroName": "Batman"
 }]
 ```
+## Exploring the parameters of `RESTarConfig.Init()`
+
+The `RESTar.RESTarConfig.Init()` method has more parameters than the ones we used above. There is the complete signature:
+```c#
+static void Init
+(
+    ushort port = 8282, 
+    string uri = "/rest",
+    bool viewEnabled = false,
+    bool setupMenu = false,
+    bool requireApiKey = false,
+    bool allowAllOrigins = true,
+    string configFilePath = null,
+    bool prettyPrint = true,
+    ushort daysToSaveErrors = 30,
+    LineEndings lineEndings = LineEndings.Windows,
+    IEnumerable<ResourceProvider> resourceProviders = null
+);
+```
+For now, let's focus on `requireApiKey`, `allowAllOrigins`, and `configFilePath`. These are used to control external access to the REST API. 
+
+## Role-based authorization using API keys
+
+In most use cases, we want to apply some form of role-based access control to the registered resources. Let's say only some clients should be allowed to insert and delete `SuperHero` entities, while all should be able to read. To implement this, we create an XML file that will work as the configuration that RESTar reads API keys and access rights from. It can look like this:
+
+
+
