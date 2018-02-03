@@ -31,7 +31,7 @@ public class SuperHero
     public string AliasOrName => SuperHeroName ?? RegularName;
 }
 ```
-RESTar will find the `SuperHero` class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/myservice/superhero`. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within this requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax):
+RESTar will find the `SuperHero` class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/myservice/superhero`. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within this requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax):
 
 ```
 curl 'localhost:8282/myservice/superhero' -d '{
