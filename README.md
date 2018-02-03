@@ -151,4 +151,14 @@ In the example above, we saw a Starcounter database class working as a REST reso
     "LongestOriginStoryLength": 4123
 }]
 ```
-We can all see the benefit of this report class, right? 
+We can all see the benefit of this report class, right?
+
+Implementing it is simple. Just like we would with a database class, we create a new .NET class, and assign the `RESTarAttribute` attribute to it. This time we only need `GET` to be enabled for the resource. Note that the class below is not a Starcounter database class.
+
+```c#
+   
+
+```
+
+To instruct RESTar what logic to apply when selecting entities of this type, we need to implement the `RESTar.ISelector<T>`
+ interface, and use the class type as the type parameter `T`. Failure to do so will result in a kind but resolute runtime exception.
