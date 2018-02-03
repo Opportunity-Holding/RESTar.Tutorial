@@ -92,7 +92,7 @@ For now, let's focus on `requireApiKey`, and `configFilePath`. These are used to
 
 ## Role-based authorization using API keys
 
-In most use cases, we want to apply some form of role-based access control to the registered resources. Let's say only some clients should be allowed to insert and delete `SuperHero` entities, while all should be able to read. To implement this, we create an XML file that will work as the configuration that RESTar reads API keys and access rights from. Let's create a new XML file in the "C:\RESTar" directory and call it "Config.xml" (the name and location can be different). Let's make its content look like this:
+In most use cases, we want to apply some form of role-based access control to the registered resources. Let's say only some clients should be allowed to insert and delete `SuperHero` entities, while all should be able to read. To implement this, we create an XML file that will work as the configuration that RESTar reads API keys and access rights from. Let's create a new XML file in the project directory and call it "Config.xml" (the name and location can be different). Let's make its content look like this:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -122,6 +122,7 @@ This configuration file specifies two api keys: `a-secure-admin-key` and `a-secu
 namespace RESTarTutorial
 {
     using RESTar;
+    using Starcounter;
     public class Program
     {
         public static void Main()
@@ -131,7 +132,7 @@ namespace RESTarTutorial
                 port: 8282,
                 uri: "/myservice",
                 requireApiKey: true,
-                configFilePath: @"C:\RESTar\Config.xml"
+                configFilePath: Application.Current.WorkingDirectory + "/Config.xml"
             );
         }
     }
@@ -201,8 +202,7 @@ namespace RESTarTutorial
 }
 ```
 
-To instruct RESTar what logic to apply when selecting entities of this type, we need to implement the `RESTar.ISelector<T>`
- interface, and use the class type as the type parameter `T`. Failure to do so will result in a kind but resolute runtime exception. In the body of this method, we provide logic for generating an `IEnumerable<SuperHeroReport>` that is then returned to RESTar.
+To define or override the logic that is used when RESTar selects entities of a resource type, we implement the `RESTar.ISelector<T>` interface, and use the resource type as the type parameter `T`. Failure to provide the operations needed for the methods assigned in the `RESTarAttribute` constructor will result in a kind but resolute runtime exception. In the body of this `Select` method above, we provide logic for generating an `IEnumerable<SuperHeroReport>` that is then returned to RESTar when evaluating `GET` requests.
  
 ## Making some fancy requests
-OK, now we've seen the basics of what RESTar can do – and how to make data sources from a Starcounter application available over the REST API in a secure way.
+OK, now we've seen the basics of what RESTar can do – and how to make data sources from a Starcounter application available over the REST API in a secure way. Next, let's look at some more advanced examples of how a client can consume a RESTar API. We will use the same application as above, and imagine that the database is now populated with `SuperHero` entities. To try these requests yourself – first clone this repository to your local machine and run the `RESTarTutorial` application.
