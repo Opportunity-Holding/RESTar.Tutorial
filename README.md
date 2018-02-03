@@ -35,10 +35,11 @@ namespace RESTarTutorial
     [Database, RESTar(GET, POST, PUT, PATCH, DELETE)]
     public class SuperHero
     {
-        public string RegularName { get; set; }
-        public string SuperHeroName { get; set; }
-        public string OriginStory { get; set; }
-        public string AliasOrName => SuperHeroName ?? RegularName;
+        public string Title { get; set; }
+        public string Gender { get; set; }
+        public string Height { get; set; }
+        public string Weight { get; set; }
+        public string Occupation { get; set; }
         public DateTime InsertedAt { get; }
         public SuperHero() => InsertedAt = DateTime.Now;
     }
@@ -63,10 +64,12 @@ curl 'localhost:8282/myservice/superhero'
 Output:
 [{
     "RegularName": "Selina Kyle",
-    "SuperHeroName": "Catwoman"
+    "SuperHeroName": "Catwoman",
+    "OriginStory": null
 },{
     "RegularName": "Bruce Wayne",
-    "SuperHeroName": "Batman"
+    "SuperHeroName": "Batman",
+    "OriginStory": null
 }]
 ```
 ## Exploring the parameters of `RESTarConfig.Init()`
