@@ -19,7 +19,7 @@ public class Program
     }
 }
 ```
-The application above is not very useful, however, since it doesn't expose any resources except the resources that come with RESTar. Let's change that. To register a Starcounter database class with RESTar, so that RESTar can expose it for operations over the REST API, we simply decorate it's class definition with the `RESTarAttribute` attribute.
+The application above is not very useful, however, since it doesn't really expose any app data. Let's change that. To register a Starcounter database class with RESTar, so that RESTar can expose it for operations over the REST API, we simply decorate it's class definition with the `RESTarAttribute` attribute.
 
 ```c#
 [Database, RESTar(GET, POST, PUT, PATCH, DELETE)]
