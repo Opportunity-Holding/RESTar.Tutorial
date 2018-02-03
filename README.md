@@ -12,7 +12,7 @@ All we need to do then, to enable RESTar in a given application, is to make a ca
 namespace RESTarTutorial
 {
     using RESTar;
-    public class Program
+    public class TutorialApp
     {
         public static void Main()
         {
@@ -23,7 +23,7 @@ namespace RESTarTutorial
     }
 }
 ```
-The application above is not very useful, however, since it doesn't really expose any app data. Let's change that. To register a Starcounter database class with RESTar, so that RESTar can expose it for operations over the REST API, we simply decorate it's class definition with the `RESTarAttribute` attribute.
+The application above is not very useful, however, since it doesn't really expose any app data through the REST API. Let's change that. RESTar can take a Starcounter database class and make its content available as a resource in the REST API. To show RESTar which classes to expose, we simply decorate their definitions with the `RESTarAttribute` attribute. Like this:
 
 ```c#
 namespace RESTarTutorial
@@ -35,41 +35,50 @@ namespace RESTarTutorial
     [Database, RESTar(GET, POST, PUT, PATCH, DELETE)]
     public class SuperHero
     {
-        public string Title { get; set; }
+        public string Name { get; set; }
+        public bool HasSecretIdentity { get; set; }
         public string Gender { get; set; }
-        public string Height { get; set; }
-        public string Weight { get; set; }
-        public string Occupation { get; set; }
+        public int? YearIntroduced { get; set; }
         public DateTime InsertedAt { get; }
         public SuperHero() => InsertedAt = DateTime.Now;
     }
 }
 ```
-RESTar will find the `SuperHero` class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/myservice/superhero`. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within this requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax):
+RESTar will find the `SuperHero` database class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/myservice/superhero` and interact with its content. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within these requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax):
 
 ```
 curl 'localhost:8282/myservice/superhero' -d '{
-    "RegularName": "Selina Kyle",
-    "SuperHeroName": "Catwoman"
+    "Name": "Batman (Bruce Wayne)",
+    "HasSecretIdentity": true,
+    "Gender": "Male",
+    "YearIntroduced": 1939
 }'
 curl 'localhost:8282/myservice/superhero' -d '{
-    "RegularName": "Bruce Wayne",
-    "SuperHeroName": "Batman"
+    "Name": "Superman (Clark Kent)",
+    "HasSecretIdentity": true,
+    "Gender": "Male",
+    "YearIntroduced": 1986
 }' 
 ```
 And now, let's retrieve this data using a `GET` request:
-
 ```
-curl 'localhost:8282/myservice/superhero'
+curl 'localhost:8282/myservice/superhero//limit=2'
 Output:
 [{
-    "RegularName": "Selina Kyle",
-    "SuperHeroName": "Catwoman",
-    "OriginStory": null
-},{
-    "RegularName": "Bruce Wayne",
-    "SuperHeroName": "Batman",
-    "OriginStory": null
+    "Name": "Batman (Bruce Wayne)",
+    "HasSecretIdentity": true,
+    "Gender": "Male",
+    "YearIntroduced": 1939,
+    "InsertedAt": "2018-02-04T00:20:04.7244481Z",
+    "ObjectNo": 55410
+  },
+  {
+    "Name": "Superman (Clark Kent)",
+    "HasSecretIdentity": true,
+    "Gender": "Male",
+    "YearIntroduced": 1986,
+    "InsertedAt": "2018-02-04T00:20:07.7404397Z",
+    "ObjectNo": 55411
 }]
 ```
 ## Exploring the parameters of `RESTarConfig.Init()`
@@ -126,7 +135,7 @@ namespace RESTarTutorial
 {
     using RESTar;
     using Starcounter;
-    public class Program
+    public class TutorialApp
     {
         public static void Main()
         {
@@ -147,15 +156,26 @@ In the example above, we saw a Starcounter database class working as a REST reso
 curl "localhost:8282/myservice/superheroreport" -H "Authorization: apikey a-secure-user-key"
 Output:
 [{
-    "NumberOfSuperHeroes": ,
-    "FirstSuperHeroInserted": ,
-     "LastSuperHeroInserted": 
+    "NumberOfSuperHeroes": 6733,
+    "FirstSuperHeroInserted": {
+      "Name": "Batman (Bruce Wayne)",
+      "HasSecretIdentity": true,
+      "Gender": "Male",
+      "YearIntroduced": 1939,
+      "InsertedAt": "2018-02-04T00:20:04.7244481Z",
+      "ObjectNo": 55410
+    },
+    "LastSuperHeroInserted": {
+      "Name": "TK421 (Spiderling) (Earth-616)",
+      "HasSecretIdentity": true,
+      "Gender": "Male",
+      "YearIntroduced": null,
+      "InsertedAt": "2018-02-04T00:21:05.1106079Z",
+      "ObjectNo": 62142
+    }
 }]
 ```
-We can all see the benefit of this resource, right?
-
-Implementing it is simple. Just like we would with a database class, we create a new .NET class, and assign the `RESTarAttribute` attribute to it. This time we only need `GET` to be enabled for the resource. Note that the class below is not a Starcounter database class.
-
+To implement this, just like we would with a database resource, we create a new .NET class, and assign the `RESTarAttribute` attribute to it. This time we only need `GET` to be enabled for the resource. Note that the class below is not a Starcounter database class.
 ```c#
 namespace RESTarTutorial
 {
