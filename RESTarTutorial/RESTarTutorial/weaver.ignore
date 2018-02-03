@@ -1,0 +1,10 @@
+﻿Newtonsoft.Json.dll
+Sigil.dll
+DocumentFormat.OpenXml
+ClosedXML.dll
+ICSharpCode.SharpZipLib
+Excel
+System.ValueTuple
+System.Data.SQLite
+EntityFramework
+SQLite.Interop

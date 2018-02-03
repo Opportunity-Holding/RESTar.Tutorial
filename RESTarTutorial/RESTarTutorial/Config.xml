@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <ApiKey>
+    <Key>a-secure-admin-key</Key>
+    <AllowAccess>
+      <Resource>RESTar.*</Resource>
+      <Resource>RESTar.Admin.*</Resource>
+      <Resource>RESTar.Dynamic.*</Resource>
+      <Resource>RESTarTutorial.*</Resource>
+      <Methods>*</Methods>
+    </AllowAccess>
+  </ApiKey>
+  <ApiKey>
+    <Key>a-secure-user-key</Key>
+    <AllowAccess>
+      <Resource>RESTarTutorial.*</Resource>
+      <Methods>GET</Methods>
+    </AllowAccess>
+  </ApiKey>
+</config>
