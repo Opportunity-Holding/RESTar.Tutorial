@@ -138,8 +138,10 @@ namespace RESTarTutorial
 }
 ```
 ## Non-starcounter resources
-In the example above, we saw a Starcounter database class working as a REST resource through RESTar. Starcounter database classes make for good examples, since most Starcounter developers are familiar with them, but RESTar itself is not limited to these classes. Any public non-static class can work as a RESTar resource class – as long as the developer can define the logic that is needed to support operations like `Select`, `Insert` and `Delete` that are used in REST requests. Say, for example, that we want a REST resource that is simply a transient aggregation of database data, that is generated when requested. To go with the example above, let's say we want a `SuperHeroReport` class that outputs something like this:
-```JSON
+In the example above, we saw a Starcounter database class working as a REST resource through RESTar. Starcounter database classes make for good examples, since most Starcounter developers are familiar with them, but RESTar itself is not limited to these classes. Any public non-static class can work as a RESTar resource class – as long as the developer can define the logic that is needed to support operations like `Select`, `Insert` and `Delete` that are used in REST requests. Say, for example, that we want a REST resource that is simply a transient aggregation of database data, that is generated when requested. To go with the example above, let's say we want a `SuperHeroReport` class that we can make `GET` requests to. And since we just set up API keys, we need to include one of the keys in the `Authorization` header. We want to be able to do something like this:
+```
+curl "localhost:8282/myservice/superheroreport" -H "Authorization: apikey a-secure-user-key"
+Output:
 [{
     "NumberOfSuperHeroes": 245,
     "FirstSuperHeroInserted": {
@@ -153,7 +155,7 @@ In the example above, we saw a Starcounter database class working as a REST reso
     "LongestOriginStoryLength": 4123
 }]
 ```
-We can all see the benefit of this report class, right?
+We can all see the benefit of this resource, right?
 
 Implementing it is simple. Just like we would with a database class, we create a new .NET class, and assign the `RESTarAttribute` attribute to it. This time we only need `GET` to be enabled for the resource. Note that the class below is not a Starcounter database class.
 
@@ -200,4 +202,7 @@ namespace RESTarTutorial
 ```
 
 To instruct RESTar what logic to apply when selecting entities of this type, we need to implement the `RESTar.ISelector<T>`
- interface, and use the class type as the type parameter `T`. Failure to do so will result in a kind but resolute runtime exception.
+ interface, and use the class type as the type parameter `T`. Failure to do so will result in a kind but resolute runtime exception. In the body of this method, we provide logic for generating an `IEnumerable<SuperHeroReport>` that is then returned to RESTar.
+ 
+## Making some fancy requests
+OK, now we've seen the basics of what RESTar can do – and how to make data sources from a Starcounter application available over the REST API in a secure way.
