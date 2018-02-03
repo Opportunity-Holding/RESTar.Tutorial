@@ -39,6 +39,8 @@ namespace RESTarTutorial
         public string SuperHeroName { get; set; }
         public string OriginStory { get; set; }
         public string AliasOrName => SuperHeroName ?? RegularName;
+        public DateTime InsertedAt { get; }
+        public SuperHero() => InsertedAt = DateTime.Now;
     }
 }
 ```
