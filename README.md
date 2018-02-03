@@ -158,8 +158,40 @@ We can all see the benefit of this report class, right?
 Implementing it is simple. Just like we would with a database class, we create a new .NET class, and assign the `RESTarAttribute` attribute to it. This time we only need `GET` to be enabled for the resource. Note that the class below is not a Starcounter database class.
 
 ```c#
-   
+namespace RESTarTutorial
+{
+    using RESTar;
+    using static RESTar.Methods;
 
+    [RESTar(GET)]
+    public class SuperHeroReport : ISelector<SuperHeroReport>
+    {
+        public long NumberOfSuperHeroes { get; private set; }
+        public SuperHero FirstSuperHeroInserted { get; private set; }
+        public SuperHero LastSuperHeroInserted { get; private set; }
+        public int LongestOriginStoryLength { get; private set; }
+
+        public IEnumerable<SuperHeroReport> Select(IRequest<SuperHeroReport> request)
+        {
+            var superHeroesOrdered = Db
+                .SQL<SuperHero>("SELECT t FROM RESTarTutorial.SuperHero t ORDER BY InsertedAt")
+                .ToList();
+            return new[]
+            {
+                new SuperHeroReport
+                {
+                    NumberOfSuperHeroes = Db.SQL<long>("SELECT COUNT(t) FROM RESTarTutorial.SuperHero t").FirstOrDefault(),
+                    FirstSuperHeroInserted = superHeroesOrdered.FirstOrDefault(),
+                    LastSuperHeroInserted = superHeroesOrdered.LastOrDefault(),
+                    LongestOriginStoryLength = superHeroesOrdered
+                        .Select(h => h.OriginStory.Length)
+                        .OrderByDescending(h => h)
+                        .FirstOrDefault()
+                }
+            };
+        }
+    }
+}
 ```
 
 To instruct RESTar what logic to apply when selecting entities of this type, we need to implement the `RESTar.ISelector<T>`
