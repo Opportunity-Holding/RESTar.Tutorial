@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="data.sqlite" />
     <None Include="packages.config" />
     <None Include="weaver.ignore">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
