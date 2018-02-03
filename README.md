@@ -147,16 +147,9 @@ In the example above, we saw a Starcounter database class working as a REST reso
 curl "localhost:8282/myservice/superheroreport" -H "Authorization: apikey a-secure-user-key"
 Output:
 [{
-    "NumberOfSuperHeroes": 245,
-    "FirstSuperHeroInserted": {
-        "RegularName": "Selina Kyle",
-        "SuperHeroName": "Catwoman"
-     },
-     "LastSuperHeroInserted": {
-        "RegularName": "Matthew Murdock",
-        "SuperHeroName": "Daredevil"
-    },
-    "LongestOriginStoryLength": 4123
+    "NumberOfSuperHeroes": ,
+    "FirstSuperHeroInserted": ,
+     "LastSuperHeroInserted": 
 }]
 ```
 We can all see the benefit of this resource, right?
@@ -178,7 +171,6 @@ namespace RESTarTutorial
         public long NumberOfSuperHeroes { get; private set; }
         public SuperHero FirstSuperHeroInserted { get; private set; }
         public SuperHero LastSuperHeroInserted { get; private set; }
-        public int LongestOriginStoryLength { get; private set; }
 
         public IEnumerable<SuperHeroReport> Select(IRequest<SuperHeroReport> request)
         {
@@ -194,10 +186,6 @@ namespace RESTarTutorial
                         .FirstOrDefault(),
                     FirstSuperHeroInserted = superHeroesOrdered.FirstOrDefault(),
                     LastSuperHeroInserted = superHeroesOrdered.LastOrDefault(),
-                    LongestOriginStoryLength = superHeroesOrdered
-                        .Select(h => h.OriginStory.Length)
-                        .OrderByDescending(h => h)
-                        .FirstOrDefault()
                 }
             };
         }
