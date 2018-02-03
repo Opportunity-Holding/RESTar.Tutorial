@@ -86,11 +86,52 @@ static void Init
     IEnumerable<ResourceProvider> resourceProviders = null
 );
 ```
-For now, let's focus on `requireApiKey`, `allowAllOrigins`, and `configFilePath`. These are used to control external access to the REST API. 
+For now, let's focus on `requireApiKey`, and `configFilePath`. These are used to control external access to the REST API. 
 
 ## Role-based authorization using API keys
 
-In most use cases, we want to apply some form of role-based access control to the registered resources. Let's say only some clients should be allowed to insert and delete `SuperHero` entities, while all should be able to read. To implement this, we create an XML file that will work as the configuration that RESTar reads API keys and access rights from. It can look like this:
+In most use cases, we want to apply some form of role-based access control to the registered resources. Let's say only some clients should be allowed to insert and delete `SuperHero` entities, while all should be able to read. To implement this, we create an XML file that will work as the configuration that RESTar reads API keys and access rights from. Let's create a new XML file in the "C:\RESTar" directory and call it "Config.xml" (the name and location can be different). Let's make its content look like this:
 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <ApiKey>
+    <Key>a-secure-admin-key</Key>
+    <AllowAccess>
+      <Resource>RESTar.*</Resource>
+      <Resource>RESTar.Admin.*</Resource>
+      <Resource>RESTar.Dynamic.*</Resource>
+      <Resource>RESTarTutorial.*</Resource>
+      <Methods>*</Methods>
+    </AllowAccess>
+  </ApiKey>  
+  <ApiKey>
+    <Key>a-secure-user-key</Key>
+    <AllowAccess>
+      <Resource>RESTarTutorial.*</Resource>
+      <Methods>GET</Methods>
+    </AllowAccess>
+  </ApiKey>
+</config>
+```
+This configuration file specifies two api keys: `a-secure-admin-key` and `a-secure-user-key`. The first can perform all methods on all resources in the `RESTar`, `RESTar.Admin`, `RESTar.Dynamic` and `RESTarTutorial` namespaces, the latter which includes our `SuperHero` resource. The second key, however, can only make `GET` calls to resources in the `RESTarTutorial` namespace. To enforce these access rights, we set the `requireApiKey` parameter to `true` in the call to `RESTarConfig.Init()` and provide the file path to the configuration file in the `configFilePath` parameter. Here is the same program as above, but now with role-based access control:
 
+```c#
+namespace RESTarTutorial
+{
+    using RESTar;
+    public class Program
+    {
+        public static void Main()
+        {
+            RESTarConfig.Init
+            (
+                port: 8282,
+                uri: "/myservice",
+                requireApiKey: true,
+                configFilePath: @"C:\RESTar\Config.xml"
+            );
+        }
+    }
+}```
 
