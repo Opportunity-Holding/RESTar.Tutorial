@@ -34,14 +34,25 @@ public class SuperHero
 RESTar will find the `SuperHero` class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/myservice/superhero`. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within this requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax):
 
 ```
-// curl 'localhost:8282/myservice/superhero' -d '{
-//     "RegularName": "Selina Kyle",
-//     "SuperHeroName": "Catwoman"
-// }'
-//
-// curl 'localhost:8282/myservice/superhero' -d '{
-//     "RegularName": "Bruce Wayne",
-//     "SuperHeroName": "Batman"
-// }' 
+curl 'localhost:8282/myservice/superhero' -d '{
+    "RegularName": "Selina Kyle",
+    "SuperHeroName": "Catwoman"
+}'
+curl 'localhost:8282/myservice/superhero' -d '{
+    "RegularName": "Bruce Wayne",
+    "SuperHeroName": "Batman"
+}' 
 ```
+And now, let's retrieve this data using a `GET` request:
 
+```
+curl 'localhost:8282/myservice/superhero'
+Output:
+[{
+    "RegularName": "Selina Kyle",
+    "SuperHeroName": "Catwoman"
+},{
+    "RegularName": "Bruce Wayne",
+    "SuperHeroName": "Batman"
+}]
+```
