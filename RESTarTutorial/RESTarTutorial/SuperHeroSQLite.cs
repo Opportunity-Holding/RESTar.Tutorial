@@ -11,8 +11,8 @@ namespace RESTarTutorial
     /// resource cannot be queried directly in this application. See the RESTar.SQLite 
     /// NuGet package for more information about how to integrate SQLite with RESTar.
     /// 
-    /// Database taken from https://github.com/fivethirtyeight/data/tree/master/comic-characters
-    /// - which is, in turn, taken from Marvel and DC-Comics respective sites.
+    /// Database is a subset of https://github.com/fivethirtyeight/data/tree/master/comic-characters
+    /// - which is, in turn, taken from Marvel and DC Comics respective sites.
     /// </summary>
     [SQLite(CustomTableName = "Heroes"), RESTar(Methods.GET)]
     public class SuperheroSQLite : SQLiteTable
