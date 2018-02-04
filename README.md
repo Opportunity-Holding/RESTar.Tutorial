@@ -280,3 +280,5 @@ This concludes the tutorial. Hopefully you found some of it interesting and will
 [Dynamit on NuGet](https://www.nuget.org/packages/Dynamit/)
 
 For any questions or comments about this tutorial, or anything RESTar-related, please contact Erik at erik.von.krusenstierna@mopedo.com
+
+For any negative feedback, please contact areallyrealemail@gmail.com
