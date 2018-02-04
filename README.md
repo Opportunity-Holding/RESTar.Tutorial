@@ -223,14 +223,6 @@ OK, now we've seen the basics of what RESTar can do – and how to make data sou
 
 We will use the same application as earlier, and imagine that the database is now populated with `Superhero` entities. To try things out yourself – clone this repository to your local machine and run the `RESTarTutorial` application. The application comes with an SQLite database that will automatically populate Starcounter with `Superhero` entities. If that sounded cool, which it totally is, you should check out [RESTar.SQLite](https://www.nuget.org/packages/RESTar.SQLite) on NuGet next.
 
-Here is the main request template: ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_template_get.jpg))
-```
-Method:   GET
-URI:      http://localhost:8282/myservice
-Headers:  Authorization: apikey a-secure-admin-key
-```
-The URIs below are all relative to the template URI. So the relative URI `/superhero` should be read as `http://localhost:8282/myservice/superhero`
-
 A RESTar URI consists of three parts, separated by a forward slash (`/`):
 1. A resource locator, e.g. `superhero`. It points at a resource.
 2. A list of entity conditions that are either true or false of entities in the selected resource. The list items are separated with `&` characters. E.g. `gender=Female&HasSecretIdentity=false`. The key points to a property of the entity, and is not case sensitive. Values for string properties are always case sensititve.
@@ -248,10 +240,21 @@ Name | Function
 `order_desc` | Orders the output in descending order by a given property
 `distinct` | Returns only distinct entities (based on entity values)
 
+Here is the main request template used below: ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_template_get.jpg))
 ```
-Get all superheroes:                /superhero
-Get all female superheroes:         /superhero/gender=Female
-Get all
+Method:   GET
+URI:      http://localhost:8282/myservice
+Headers:  Authorization: apikey a-secure-admin-key
+```
+The URIs below are all relative to the template URI. So the relative URI `/superhero` should be read as `http://localhost:8282/myservice/superhero`
 
-
+```
+All superheroes:                            /superhero
+The first 100 superheroes:                  /superhero//limit=100
+Superheroes 15 to 20 (exclusive):           /superhero//limit=5&offset=14
+All female superheroes:                     /superhero/gender=Female
+All male superhereoes' names:               /superhero/gender=Male/select=Name
+  | Add the length of the name:             /superhero/gender=Male/add=name.length&select=name,name.length
+  | And order by name length:               /superhero/gender=Male/add=name.length&select=name,name.length&order_asc=name.length
+Years when a superhero was introduced:      /superhero//select=yearintroduced&distinct=true
 ```
