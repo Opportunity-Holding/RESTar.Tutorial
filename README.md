@@ -268,7 +268,7 @@ Note that `Length` is a .NET property of a `System.String`. All public instance 
 Now, let's try getting some Excel files. For this, we set the `Accept` header to `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. RESTar will automatically include a suggested file name in the `Content-Disposition` response header. Most clients honor this when receiving file attachments. Now try the requests above again!
 
 ## Conclusion
-This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the specification and keep exploring what RESTar can do. Otherwise, here's a [link](https://www.youtube.com/results?search_query=funny+kittens) to something better.
+This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the specification and keep exploring what RESTar can do. Otherwise, here's a [link](https://www.youtube.com/results?search_query=funny+kittens) to something I know you will like.
 
 ## Links
 [RESTar on NuGet](https://www.nuget.org/packages/RESTar/)
