@@ -226,7 +226,7 @@ For all requests below, API keys are included (if required) in the `Authorizatio
 
 What it does | Request URI
 --- | ---
-Get all heroes | `/superhero`
+Get all superheroes | `/superhero`
 Get all female heroes | `/superhero/gender=Female`
 Get all female heroes with secret identities | `/superhero/gender=Female&secretidentity=true`
 Get the first five male heroes | `/superhero/gender=Male/limit=5`
