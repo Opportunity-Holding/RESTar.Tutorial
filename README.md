@@ -227,7 +227,7 @@ OK, now we've seen the basics of what RESTar can do – and how to make data sou
 
 We will use the same application as earlier, and imagine that the database is now populated with `Superhero` entities. To try things out yourself – clone this repository to your local machine and run the `RESTarTutorial` application. The application comes with an SQLite database that will automatically populate Starcounter with `Superhero` entities. If that sounded cool, which it totally is, you should check out [RESTar.SQLite](https://www.nuget.org/packages/RESTar.SQLite) on NuGet next.
 
-A RESTar URI consists of three parts, separated by a forward slash (`/`):
+A RESTar URI consists of three parts after the service root, separated by forward slashes (`/`):
 1. A resource locator, e.g. `superhero`. It points at a resource.
 2. A list of entity conditions that are either true or false of entities in the selected resource. The list items are separated with `&` characters. E.g. `gender=Female&HasSecretIdentity=false`. The key points to a property of the entity, and is not case sensitive. Values for string properties are always case sensititve.
 3. A list of meta-conditions that define rules and filters that are used in the request. These list items are also separated with `&` characters. We can, for example, include `limit=2` here to limit the output to only two entities.
