@@ -151,27 +151,27 @@ namespace RESTarTutorial
 }
 ```
 ## Non-starcounter resources
-In the example above, we saw a Starcounter database class working as a REST resource through RESTar. Starcounter database classes make for good examples, since most Starcounter developers are familiar with them, but RESTar itself is not limited to these classes. Any public non-static class can work as a RESTar resource class – as long as the developer can define the logic that is needed to support operations like `Select`, `Insert` and `Delete` that are used in REST requests. Say, for example, that we want a REST resource that is simply a transient aggregation of database data, that is generated when requested. To go with the example above, let's say we want a `SuperheroReport` class that we can make `GET` requests to:
+In the example above, we saw a Starcounter database class working as a REST resource through RESTar. Starcounter database classes make for good examples, since most Starcounter developers are familiar with them, but RESTar itself is not limited to these classes. Any public non-static class can work as a RESTar resource class – as long as the developer can define the logic that is needed to support operations like `Select`, `Insert` and `Delete` that are used in REST requests. Say, for example, that we want a REST resource that is simply a transient aggregation of database data, that is generated when requested. To go with the example above, let's say we want a `SuperheroReport` class that we can make `GET` requests to ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_report_get.jpg)):
 ```
 curl "localhost:8282/myservice/superheroreport" -H "Authorization: apikey a-secure-user-key"
 Output:
 [{
     "NumberOfSuperheroes": 167,
     "FirstSuperheroInserted": {
-      "Name": "Batman (Bruce Wayne)",
-      "HasSecretIdentity": true,
-      "Gender": "Male",
-      "YearIntroduced": 1939,
-      "InsertedAt": "2018-02-04T01:16:27.6341808Z",
-      "ObjectNo": 103295
+        "Name": "Batman (Bruce Wayne)",
+        "HasSecretIdentity": true,
+        "Gender": "Male",
+        "YearIntroduced": 1939,
+        "InsertedAt": "2018-02-04T01:16:27.6341808Z",
+        "ObjectNo": 103295
     },
     "LastSuperheroInserted": {
-      "Name": "Sersi (Earth-616)",
-      "HasSecretIdentity": true,
-      "Gender": "Female",
-      "YearIntroduced": 1976,
-      "InsertedAt": "2018-02-04T01:16:27.9386776Z",
-      "ObjectNo": 103461
+        "Name": "Sersi (Earth-616)",
+        "HasSecretIdentity": true,
+        "Gender": "Female",
+        "YearIntroduced": 1976,
+        "InsertedAt": "2018-02-04T01:16:27.9386776Z",
+        "ObjectNo": 103461
     }
 }]
 ```
