@@ -35,7 +35,7 @@ namespace RESTarTutorial
             // The 'requireApiKey' parameter is set to 'true'. API keys are required in all incoming requests.
             // The 'configFilePath' points towards the configuration file, which contains API keys. In this case,
             //   this file is located in the project folder.
-
+            
             SuperheroSQLite.LoadDemoDatabase();
         }
     }
