@@ -256,7 +256,7 @@ All female superheroes:                     /superhero/gender=Female
 All male superhereoes' names:               /superhero/gender=Male/select=Name
   | Add the length of the name:             /superhero/gender=Male/add=name.length&select=name,name.length
   | And order by name length:               /superhero/gender=Male/add=name.length&select=name,name.length&order_asc=name.length
-Years when a superhero was introduced:      /superhero//select=yearintroduced&distinct=true
+Years when a superhero was introduced:      /superhero//select=yearintroduced&distinct=true&order_asc=yearintroduced
 ```
 Note that `Length` is a .NET property of a `System.String`. All public instance properties (and properties of properties) are available for references from meta-conditions like `add` and `select`.
 
