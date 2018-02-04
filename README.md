@@ -225,10 +225,33 @@ We will use the same application as earlier, and imagine that the database is no
 
 Here is the main request template: ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_template_get.jpg))
 ```
-Method: GET
-URI: http://localhost:8282/myservice
-Headers: Authorization: apikey a-secure-admin-key
+Method:   GET
+URI:      http://localhost:8282/myservice
+Headers:  Authorization: apikey a-secure-admin-key
 ```
 The URIs below are all relative to the template URI. So the relative URI `/superhero` should be read as `http://localhost:8282/myservice/superhero`
 
+A RESTar URI consists of three parts, separated by a forward slash (`/`):
+1. A resource locator, e.g. `superhero`. It points at a resource.
+2. A list of entity conditions that are either true or false of entities in the selected resource. The list items are separated with `&` characters. E.g. `gender=Female&HasSecretIdentity=false`. The key points to a property of the entity, and is not case sensitive. Values for string properties are always case sensititve.
+3. A list of meta-conditions that define rules and filters that are used in the request. These list items are also separated with `&` characters. We can, for example, include `limit=2` here to limit the output to only two entities.
 
+A complete description of all meta-conditions can be find in the [Specification](https://goo.gl/TIkN7m), but here are some that are used below:
+
+Name | Function
+--- | ---
+`limit` | Limits the output to a given number of entities
+`offset` | Skips a given number of entities
+`select` | Include only a subset of the entity's properties in the output
+`add` | Add a property to the output
+`order_asc` | Orders the output in ascending order by a given property
+`order_desc` | Orders the output in descending order by a given property
+`distinct` | Returns only distinct entities (based on entity values)
+
+```
+Get all superheroes:                /superhero
+Get all female superheroes:         /superhero/gender=Female
+Get all
+
+
+```
