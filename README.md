@@ -232,4 +232,7 @@ Get all female heroes with secret identities | `/superhero/gender=Female&secreti
 Get the first five male heroes | `/superhero/gender=Male/limit=5`
 Get male heroes from 6 through 10 | `/superhero/gender=Male/limit=5&offset=5`
 Get female heroes, ordered by the year they were introduced | `/superhero/gender=Female/order_asc=yearintroduced`
-
+Get male heroes, ordered by the length of their names | `/superhero/gender=Male/order_asc=name.length`
+Get all male heroes' names  | `/superhero/gender=Male/select=name`
+Get all years when a superhero was introduced  | `/superhero//select=yearintroduced&distinct=true`
+Find Odin's surname | `/superhero//search=odin%20`
