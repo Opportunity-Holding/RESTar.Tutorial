@@ -6,5 +6,5 @@ ICSharpCode.SharpZipLib
 Excel
 System.ValueTuple
 System.Data.SQLite
-EntityFramework
+FastMember.Signed
 SQLite.Interop

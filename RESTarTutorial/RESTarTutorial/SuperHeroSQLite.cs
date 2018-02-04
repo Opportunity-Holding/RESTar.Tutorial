@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using RESTar;
+﻿using RESTar;
 using RESTar.Linq;
 using RESTar.SQLite;
 using Starcounter;
@@ -26,7 +25,6 @@ namespace RESTarTutorial
         public static void LoadDemoDatabase() => new Request<SuperheroSQLite>()
             .WithConditions(nameof(Year), Operators.NOT_EQUALS, null)
             .GET()
-            .Take(1000)
             .ForEach(hero => Db.Transact(() => new Superhero
             {
                 HasSecretIdentity = hero.Id == "Secret Identity",
