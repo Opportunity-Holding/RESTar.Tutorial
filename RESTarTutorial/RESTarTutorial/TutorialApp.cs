@@ -5,7 +5,6 @@ using RESTar.Linq;
 using RESTar.SQLite;
 using static RESTar.Methods;
 
-
 namespace RESTarTutorial
 {
     using RESTar;
