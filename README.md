@@ -17,7 +17,7 @@ namespace RESTarTutorial
         public static void Main()
         {
             RESTarConfig.Init(port: 8282, uri: "/myservice");
-            // The 'port' argument decides which HTTP port to register the REST handlers on
+            // The 'port' argument sets the HTTP port on which to register the REST handlers
             // The 'uri' argument sets the root uri of the REST API
         }
     }
