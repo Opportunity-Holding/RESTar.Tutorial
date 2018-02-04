@@ -257,7 +257,7 @@ All male superhereoes' names:               /superhero/gender=Male/select=Name
   | Add the length of the name:             /superhero/gender=Male/add=name.length&select=name,name.length
   | And order by name length:               /superhero/gender=Male/add=name.length&select=name,name.length&order_asc=name.length
 Years when a superhero was introduced:      /superhero//select=yearintroduced&distinct=true&order_asc=yearintroduced
-Get a compliment:                           /echo/Compliment=You%20are%20doing%20great!%20Isn%27t%20this%20a%20nice%20API%3F%20Oh%2C%20sorry%2C%20did%20I%20say%20this%20was%20a%20complement%20to%20you%2C%20and%20not%20to%20me%3F%20%F0%9F%98%84
+Get a compliment:                           /echo/Compliment=%2Fecho%2FCompliment%3DYou%20are%20doing%20great!%20Isn%27t%20this%20a%20nice%20API%3F%20Oh%2C%20sorry%2C%20did%20I%20say%20this%20was%20a%20complement%20to%20you%2C%20and%20not%20to%20me%3F
 ```
 Note that `Length` is a .NET property of a `System.String`. All public instance properties (and properties of properties) are available for references from meta-conditions like `add` and `select`.
 
