@@ -224,7 +224,11 @@ OK, now we've seen the basics of what RESTar can do – and how to make data sou
 We will use the same application as earlier, and imagine that the database is now populated with `Superhero` entities. To try things out yourself – clone this repository to your local machine and run the `RESTarTutorial` application. The application comes with an SQLite database that will automatically populate Starcounter with `Superhero` entities. If that sounded cool, which it totally is, you should check out [RESTar.SQLite](https://www.nuget.org/packages/RESTar.SQLite) on NuGet next.
 
 Here is the main request template: ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_template_get.jpg))
-Method: `GET`
-URI: `http://localhost:8282/myservice`
-Headers: `Authorization: apikey a-secure-admin-key`
+```
+Method: GET
+URI: http://localhost:8282/myservice
+Headers: Authorization: apikey a-secure-admin-key
+```
+The URIs below are all relative to the template URI. So the relative URI `/superhero` should be read as `http://localhost:8282/myservice/superhero`
+
 
