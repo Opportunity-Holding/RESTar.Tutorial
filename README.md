@@ -260,4 +260,4 @@ Years when a superhero was introduced:      /superhero//select=yearintroduced&di
 ```
 Note that `Length` is a .NET property of a `System.String`. All public instance properties (and properties of properties) are available for references from meta-conditions like `add` and `select`.
 
-Now, let's try getting some Excel. For this, we set the `Accept` header to `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. RESTar will automatically include a suggested file name in the `Content-Disposition` response header. Most clients honor this when receiving file attachments. Now try the requests above again.
+Now, let's try getting some Excel files. For this, we set the `Accept` header to `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. RESTar will automatically include a suggested file name in the `Content-Disposition` response header. Most clients honor this when receiving file attachments. Now try the requests above again.
