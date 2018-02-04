@@ -27,7 +27,7 @@ namespace RESTarTutorial
                 configFilePath: workingDirectory + "/Config.xml",
                 resourceProviders: new[] {sqliteProvider}
             );
-            // The 'port' argument decides which HTTP port to register the REST handlers on
+            // The 'port' argument sets the HTTP port on which to register the REST handlers
             // The 'uri' argument sets the root uri of the REST API
             // The 'requireApiKey' parameter is set to 'true'. API keys are required in all incoming requests
             // The 'configFilePath' points towards the configuration file, which includes API keys
@@ -58,6 +58,10 @@ namespace RESTarTutorial
         public Superhero FirstSuperheroInserted { get; private set; }
         public Superhero LastSuperheroInserted { get; private set; }
 
+        /// <summary>
+        /// This method returns an IEnumerable of the resource type. RESTar will call this 
+        /// on GET requests and send the results back to the client as e.g. JSON.
+        /// </summary>
         public IEnumerable<SuperheroReport> Select(IRequest<SuperheroReport> request)
         {
             var superHeroesOrdered = Db
