@@ -33,18 +33,18 @@ namespace RESTarTutorial
     using static RESTar.Methods;
 
     [Database, RESTar(GET, POST, PUT, PATCH, DELETE)]
-    public class SuperHero
+    public class Superhero
     {
         public string Name { get; set; }
         public bool HasSecretIdentity { get; set; }
         public string Gender { get; set; }
         public int? YearIntroduced { get; set; }
         public DateTime InsertedAt { get; }
-        public SuperHero() => InsertedAt = DateTime.Now;
+        public Superhero() => InsertedAt = DateTime.Now;
     }
 }
 ```
-RESTar will find the `SuperHero` database class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/myservice/superhero` and interact with its content. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within these requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax):
+RESTar will find the `Superhero` database class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/myservice/superhero` and interact with its content. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within these requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax):
 
 ```
 curl 'localhost:8282/myservice/superhero' -d '{
@@ -83,7 +83,7 @@ Output:
 ```
 ## Exploring the parameters of `RESTarConfig.Init()`
 
-The `RESTar.RESTarConfig.Init()` method has more parameters than the ones we used above. There is the complete signature:
+The `RESTar.RESTarConfig.Init()` method has more parameters than the ones we used above. This is the complete signature:
 ```c#
 static void Init
 (
@@ -104,7 +104,7 @@ For now, let's focus on `requireApiKey`, and `configFilePath`. These are used to
 
 ## Role-based authorization using API keys
 
-In most use cases, we want to apply some form of role-based access control to the registered resources. Let's say only some clients should be allowed to insert and delete `SuperHero` entities, while all should be able to read. To implement this, we create an XML file that will work as the configuration that RESTar reads API keys and access rights from. Let's create a new XML file in the project directory and call it "Config.xml" (the name and location can be different). Let's make its content look like this:
+In most use cases, we want to apply some form of role-based access control to the registered resources. Let's say only some clients should be allowed to insert and delete `Superhero` entities, while all should be able to read. To implement this, we create an XML file that will work as the configuration that RESTar reads API keys and access rights from. Let's create a new XML file in the project directory and call it "Config.xml" (the name and location can be different). Let's make its content look like this:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -128,7 +128,7 @@ In most use cases, we want to apply some form of role-based access control to th
   </ApiKey>
 </config>
 ```
-This configuration file specifies two api keys: `a-secure-admin-key` and `a-secure-user-key`. The first can perform all methods on all resources in the `RESTar`, `RESTar.Admin`, `RESTar.Dynamic` and `RESTarTutorial` namespaces, the latter which includes our `SuperHero` resource. The second key, however, can only make `GET` calls to resources in the `RESTarTutorial` namespace. To enforce these access rights, we set the `requireApiKey` parameter to `true` in the call to `RESTarConfig.Init()` and provide the file path to the configuration file in the `configFilePath` parameter. Here is the same program as above, but now with role-based access control:
+This configuration file specifies two api keys: `a-secure-admin-key` and `a-secure-user-key`. The first can perform all methods on all resources in the `RESTar`, `RESTar.Admin`, `RESTar.Dynamic` and `RESTarTutorial` namespaces, the latter which includes our `Superhero` resource. The second key, however, can only make `GET` calls to resources in the `RESTarTutorial` namespace. To enforce these access rights, we set the `requireApiKey` parameter to `true` in the call to `RESTarConfig.Init()` and provide the file path to the configuration file in the `configFilePath` parameter. Here is the same program as above, but now with role-based access control:
 
 ```c#
 namespace RESTarTutorial
@@ -151,31 +151,31 @@ namespace RESTarTutorial
 }
 ```
 ## Non-starcounter resources
-In the example above, we saw a Starcounter database class working as a REST resource through RESTar. Starcounter database classes make for good examples, since most Starcounter developers are familiar with them, but RESTar itself is not limited to these classes. Any public non-static class can work as a RESTar resource class – as long as the developer can define the logic that is needed to support operations like `Select`, `Insert` and `Delete` that are used in REST requests. Say, for example, that we want a REST resource that is simply a transient aggregation of database data, that is generated when requested. To go with the example above, let's say we want a `SuperHeroReport` class that we can make `GET` requests to. And since we just set up API keys, we need to include one of the keys in the `Authorization` header. We want to be able to do something like this:
+In the example above, we saw a Starcounter database class working as a REST resource through RESTar. Starcounter database classes make for good examples, since most Starcounter developers are familiar with them, but RESTar itself is not limited to these classes. Any public non-static class can work as a RESTar resource class – as long as the developer can define the logic that is needed to support operations like `Select`, `Insert` and `Delete` that are used in REST requests. Say, for example, that we want a REST resource that is simply a transient aggregation of database data, that is generated when requested. To go with the example above, let's say we want a `SuperheroReport` class that we can make `GET` requests to:
 ```
 curl "localhost:8282/myservice/superheroreport" -H "Authorization: apikey a-secure-user-key"
 Output:
 [{
-    "NumberOfSuperHeroes": 6733,
-    "FirstSuperHeroInserted": {
+    "NumberOfSuperheroes": 167,
+    "FirstSuperheroInserted": {
       "Name": "Batman (Bruce Wayne)",
       "HasSecretIdentity": true,
       "Gender": "Male",
       "YearIntroduced": 1939,
-      "InsertedAt": "2018-02-04T00:20:04.7244481Z",
-      "ObjectNo": 55410
+      "InsertedAt": "2018-02-04T01:16:27.6341808Z",
+      "ObjectNo": 103295
     },
-    "LastSuperHeroInserted": {
-      "Name": "TK421 (Spiderling) (Earth-616)",
+    "LastSuperheroInserted": {
+      "Name": "Sersi (Earth-616)",
       "HasSecretIdentity": true,
-      "Gender": "Male",
-      "YearIntroduced": null,
-      "InsertedAt": "2018-02-04T00:21:05.1106079Z",
-      "ObjectNo": 62142
+      "Gender": "Female",
+      "YearIntroduced": 1976,
+      "InsertedAt": "2018-02-04T01:16:27.9386776Z",
+      "ObjectNo": 103461
     }
 }]
 ```
-To implement this, just like we would with a database resource, we create a new .NET class, and assign the `RESTarAttribute` attribute to it. This time we only need `GET` to be enabled for the resource. Note that the class below is not a Starcounter database class.
+To implement `SuperheroReport`, just like we would with a database resource, we create a new .NET class, and assign the `RESTarAttribute` attribute to it. This time we only need `GET` to be enabled for the resource. Note that the class below is not a Starcounter database class.
 ```c#
 namespace RESTarTutorial
 {
@@ -186,26 +186,27 @@ namespace RESTarTutorial
     using System.Collections.Generic;
 
     [RESTar(GET)]
-    public class SuperHeroReport : ISelector<SuperHeroReport>
+    public class SuperheroReport : ISelector<SuperheroReport>
     {
-        public long NumberOfSuperHeroes { get; private set; }
-        public SuperHero FirstSuperHeroInserted { get; private set; }
-        public SuperHero LastSuperHeroInserted { get; private set; }
+        public long NumberOfSuperheroes { get; private set; }
+        public Superhero FirstSuperheroInserted { get; private set; }
+        public Superhero LastSuperheroInserted { get; private set; }
 
-        public IEnumerable<SuperHeroReport> Select(IRequest<SuperHeroReport> request)
+        public IEnumerable<SuperheroReport> Select(IRequest<SuperheroReport> request)
         {
             var superHeroesOrdered = Db
-                .SQL<SuperHero>("SELECT t FROM RESTarTutorial.SuperHero t ORDER BY InsertedAt")
+                .SQL<Superhero>("SELECT t FROM RESTarTutorial.Superhero t")
+                .OrderBy(h => h.InsertedAt)
                 .ToList();
             return new[]
             {
-                new SuperHeroReport
+                new SuperheroReport
                 {
-                    NumberOfSuperHeroes = Db
-                        .SQL<long>("SELECT COUNT(t) FROM RESTarTutorial.SuperHero t")
+                    NumberOfSuperheroes = Db
+                        .SQL<long>("SELECT COUNT(t) FROM RESTarTutorial.Superhero t")
                         .FirstOrDefault(),
-                    FirstSuperHeroInserted = superHeroesOrdered.FirstOrDefault(),
-                    LastSuperHeroInserted = superHeroesOrdered.LastOrDefault(),
+                    FirstSuperheroInserted = superHeroesOrdered.FirstOrDefault(),
+                    LastSuperheroInserted = superHeroesOrdered.LastOrDefault(),
                 }
             };
         }
@@ -213,7 +214,7 @@ namespace RESTarTutorial
 }
 ```
 
-To define or override the logic that is used when RESTar selects entities of a resource type, we implement the `RESTar.ISelector<T>` interface, and use the resource type as the type parameter `T`. Failure to provide the operations needed for the methods assigned in the `RESTarAttribute` constructor will result in a kind but resolute runtime exception. In the body of this `Select` method above, we provide logic for generating an `IEnumerable<SuperHeroReport>` that is then returned to RESTar when evaluating `GET` requests.
+To define or override the logic that is used when RESTar selects entities of a resource type, we implement the `RESTar.ISelector<T>` interface, and use the resource type as the type parameter `T`. Failure to provide the operations needed for the methods assigned in the `RESTarAttribute` constructor will result in a kind but resolute runtime exception. In the body of this `Select` method above, we provide logic for generating an `IEnumerable<SuperheroReport>` that is then returned to RESTar when evaluating `GET` requests.
  
 ## Making some fancy requests
-OK, now we've seen the basics of what RESTar can do – and how to make data sources from a Starcounter application available over the REST API in a secure way. Next, let's look at some more advanced examples of how a client can consume a RESTar API. We will use the same application as above, and imagine that the database is now populated with `SuperHero` entities. To try these requests yourself – first clone this repository to your local machine and run the `RESTarTutorial` application.
+OK, now we've seen the basics of what RESTar can do – and how to make data sources from a Starcounter application available over the REST API in a secure way. Next, let's look at some more advanced examples of how a client can consume a RESTar API. We will use the same application as above, and imagine that the database is now populated with `Superhero` entities. To try these requests yourself – first clone this repository to your local machine and run the `RESTarTutorial` application.
