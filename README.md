@@ -1,7 +1,7 @@
 *By Erik von Krusenstierna (erik.von.krusenstierna@mopedo.com)*
 
 # Tutorial
-RESTar is a powerful REST API Framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and how to use it in a simple Starcounter application. The resulting application is availble in this repository, so you can download it and try things out for yourself. For more information, please se the complete [RESTar Specification](https://goo.gl/TIkN7m), which outlines all the features of RESTar.
+RESTar is a powerful REST API framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar in your projects will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and show how to use it in a simple Starcounter application. The resulting application is availble in this repository, so you can download it and try things out for yourself. More information about RESTar is also available in the [RESTar Specification](https://goo.gl/TIkN7m).
 
 ## Getting started
 To get started, install RESTar from NuGet, either by browsing for `RESTar` in the **NuGet Package Manager** or by running the following command in the **Package Manager Console**:
@@ -62,6 +62,8 @@ curl 'localhost:8282/myservice/superhero' -d '{
     "YearIntroduced": 1986
 }' 
 ```
+**Notes:** RESTar will map properties from JSON to the .NET class automatically. We can configure this mapping by decorating properties with the `RESTarMemberAttribute` attribute, but for now – let's keep things simple.
+
 And now, let's retrieve this data using a `GET` request ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_get.jpg)):
 ```
 curl 'localhost:8282/myservice/superhero//limit=2'
@@ -83,6 +85,8 @@ Output:
     "ObjectNo": 103468
 }]
 ```
+**Notes:** The `InsertedAt` property of `Superhero` is read-only. It is included in `GET` request output, but cannot be set by remote clients. RESTar automatically includes the read-only Starcounter `ObjectNo` property for database resources.
+
 ## Exploring the parameters of `RESTarConfig.Init()`
 
 The `RESTar.RESTarConfig.Init()` method has more parameters than the ones we used above. This is the complete signature:
@@ -216,8 +220,63 @@ namespace RESTarTutorial
 }
 ```
 
-To define or override the logic that is used when RESTar selects entities of a resource type, we implement the `RESTar.ISelector<T>` interface, and use the resource type as the type parameter `T`. Failure to provide the operations needed for the methods assigned in the `RESTarAttribute` constructor will result in a kind but resolute runtime exception. In the body of this `Select` method above, we provide logic for generating an `IEnumerable<SuperheroReport>` that is then returned to RESTar when evaluating `GET` requests.
+To define or override the logic that is used when RESTar selects entities of a resource type, we implement the `RESTar.ISelector<T>` interface, and use the resource type as the type parameter `T`. Failure to provide the operations needed for the methods assigned in the `RESTarAttribute` constructor will result in a friendly but resolute runtime exception. In the body of this `Select` method above, we provide logic for generating an `IEnumerable<SuperheroReport>` that is then returned to RESTar when evaluating `GET` requests.
  
 ## Making requests
-OK, now we've seen the basics of what RESTar can do – and how to make data sources from a Starcounter application available over the REST API in a secure way. Next, let's look at some more examples of how a client can consume a RESTar API. We will use the same application as above, and imagine that the database is now populated with `Superhero` entities. To try things out yourself – clone this repository to your local machine and run the `RESTarTutorial` application. The application comes with an SQLite database that will automatically populate Starcounter with `Superhero` entities. If that sounded cool, which it totally is, you should check out [RESTar.SQLite](https://www.nuget.org/packages/RESTar.SQLite) on NuGet next.
+OK, now we've seen the basics of what RESTar can do – and how to make data sources from a Starcounter application available over the REST API in a secure way. One of the really cool things about RESTar, which we haven't really explored yet, is the flexibility and power it gives clients that consume the REST API. Included in RESTar is a wide range of operations and utilities that make API consumption simple, powerful, fast and easy to debug. This tutorial cannot possibly cover it all, but I'll provide some examples below.
 
+We will use the same application as earlier, and imagine that the database is now populated with `Superhero` entities. To try things out yourself – clone this repository to your local machine and run the `RESTarTutorial` application. The application comes with an SQLite database that will automatically populate Starcounter with `Superhero` entities. If that sounded cool, which it totally is, you should check out [RESTar.SQLite](https://www.nuget.org/packages/RESTar.SQLite) on NuGet next.
+
+A RESTar URI consists of three parts after the service root, separated by forward slashes (`/`):
+1. A resource locator, e.g. `superhero`. It points at a resource.
+2. A list of entity conditions that are either `true` or `false` of entities in the selected resource. The list items are separated with `&` characters. E.g. `gender=Female&HasSecretIdentity=false`. The key points to a property of the entity, and is not case sensitive. Values for string properties are always case sensititve.
+3. A list of meta-conditions that define rules and filters that are used in the request. These list items are also separated with `&` characters. We can, for example, include `limit=2` here to limit the output to only two entities.
+
+A complete description of all meta-conditions can be find in the [Specification](https://goo.gl/TIkN7m), but here are some that are used below:
+
+Name | Function
+--- | ---
+`limit` | Limits the output to a given number of entities
+`offset` | Skips a given number of entities
+`select` | Include only a subset of the entity's properties in the output
+`add` | Add a property to the output
+`order_asc` | Orders the output in ascending order by a given property
+`order_desc` | Orders the output in descending order by a given property
+`distinct` | Returns only distinct entities (based on entity values)
+
+Here is the main request template used below: ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_template_get.jpg))
+```
+Method:   GET
+URI:      http://localhost:8282/myservice
+Headers:  Authorization: apikey a-secure-admin-key
+```
+The URIs below are all relative to the template URI. So the relative URI `/superhero` should be read as `http://localhost:8282/myservice/superhero`
+
+```
+All superheroes:                            /superhero
+The first 100 superheroes:                  /superhero//limit=100
+Superheroes 15 to 20 (exclusive):           /superhero//limit=5&offset=14
+All female superheroes:                     /superhero/gender=Female
+All male superhereoes' names:               /superhero/gender=Male/select=Name
+  | Add the length of the name:             /superhero/gender=Male/add=name.length&select=name,name.length
+  | And order by name length:               /superhero/gender=Male/add=name.length&select=name,name.length&order_asc=name.length
+Years when a superhero was introduced:      /superhero//select=yearintroduced&distinct=true&order_asc=yearintroduced
+Get a compliment:                           /echo/Compliment=You%20are%20doing%20really%20well.%20Isn%27t%20this%20a%20nice%20API%3F%20Oh%2C%20sorry%2C%20did%20I%20say%20this%20was%20a%20complement%20to%20you%2C%20and%20not%20to%20me%3F
+```
+Note that `Length` is a .NET property of a `System.String`. All public instance properties (and properties of properties) are available for references from meta-conditions like `add` and `select`.
+
+Now, let's try getting some Excel files. For this, we set the `Accept` header to `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. For Postman, set the `Accept` header and click the arrow to the right of the **Send** button, and then **Send and Download**. This will save the Excel file to disk. Now try the requests above again!
+
+## Conclusion
+This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the specification and keep exploring what RESTar can do. If not, at least it's over now! `¯\_(ツ)_/¯`
+
+## Links
+[RESTar on NuGet](https://www.nuget.org/packages/RESTar/)
+
+[The RESTar specification](https://goo.gl/TIkN7m)
+
+[RESTar.SQLite on NuGet](https://www.nuget.org/packages/RESTar.SQLite/)
+
+[Dynamit on NuGet](https://www.nuget.org/packages/Dynamit/)
+
+For any questions or comments about this tutorial, or anything RESTar-related, please contact Erik at erik.von.krusenstierna@mopedo.com
