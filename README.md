@@ -1,4 +1,4 @@
-*By Erik von Krusenstierna (@erikvk erik.von.krusenstierna@mopedo.com)*
+*By Erik von Krusenstierna (erik.von.krusenstierna@mopedo.com)*
 
 # Tutorial
 RESTar is a powerful REST API Framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and show how to use it in a simple Starcounter application. The resulting application is availble in this repository, so you can download it and try things out for yourself. More information about RESTar is also available in the [RESTar Specification](https://goo.gl/TIkN7m).
