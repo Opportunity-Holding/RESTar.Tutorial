@@ -122,6 +122,8 @@ AccountManagerApp.config
 ._.DS_Store
 logs
 *.ide
+._*
+._.*
 
 # Backup & report files from converting an old project file to a newer
 # Visual Studio version. Backup files are not needed, because we have git ;-)
