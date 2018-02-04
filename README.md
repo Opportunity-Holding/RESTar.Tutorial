@@ -62,7 +62,7 @@ curl 'localhost:8282/myservice/superhero' -d '{
     "YearIntroduced": 1986
 }' 
 ```
-RESTar will map propertoes from JSON to the .NET class automatically. We can configure this mapping by decorating properties with the `RESTarMemberAttribute` attribute, but for now – let's keep things simple.
+**Notes**: RESTar will map properties from JSON to the .NET class automatically. We can configure this mapping by decorating properties with the `RESTarMemberAttribute` attribute, but for now – let's keep things simple.
 
 And now, let's retrieve this data using a `GET` request ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_get.jpg)):
 ```
@@ -85,7 +85,7 @@ Output:
     "ObjectNo": 103468
 }]
 ```
-Note that some properties of the `Superhero` class are read-only. They are included in GET request output, but cannot be set by remote clients. RESTar automatically includes the Starcounter `ObjectNo` for database resources.
+**Notes** Some properties of the `Superhero` class are read-only. They are included in GET request output, but cannot be set by remote clients. RESTar automatically includes the Starcounter `ObjectNo` for database resources.
 
 ## Exploring the parameters of `RESTarConfig.Init()`
 
