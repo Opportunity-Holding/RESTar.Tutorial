@@ -10,11 +10,14 @@ namespace RESTarTutorial
     using RESTar;
     using Starcounter;
 
+    /// <summary>
+    /// A simple RESTar application
+    /// </summary>
     public class TutorialApp
     {
         public static void Main()
         {
-            Superhero.ClearDemoDatabase();
+            Db.Transact(() => Db.SQL<Superhero>("SELECT t FROM RESTarTutorial.Superhero t").ForEach(Db.Delete));
             var workingDirectory = Application.Current.WorkingDirectory;
             var sqliteProvider = new SQLiteProvider(workingDirectory, "data");
             // SQLite is used here to populate the Superhero table with data
@@ -29,8 +32,9 @@ namespace RESTarTutorial
             );
             // The 'port' argument sets the HTTP port on which to register the REST handlers
             // The 'uri' argument sets the root uri of the REST API
-            // The 'requireApiKey' parameter is set to 'true'. API keys are required in all incoming requests
-            // The 'configFilePath' points towards the configuration file, which includes API keys
+            // The 'requireApiKey' parameter is set to 'true'. API keys are required in all incoming requests.
+            // The 'configFilePath' points towards the configuration file, which contains API keys. In this case,
+            //   this file is located in the project folder.
 
             SuperheroSQLite.LoadDemoDatabase();
         }
@@ -45,10 +49,6 @@ namespace RESTarTutorial
         public int? YearIntroduced { get; set; }
         public DateTime InsertedAt { get; }
         public Superhero() => InsertedAt = DateTime.Now;
-
-        internal static void ClearDemoDatabase() => Db.Transact(() => Db
-            .SQL<Superhero>("SELECT t FROM RESTarTutorial.Superhero t")
-            .ForEach(Db.Delete));
     }
 
     [RESTar(GET)]
