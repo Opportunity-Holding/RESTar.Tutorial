@@ -261,4 +261,15 @@ Get a compliment:                           /echo/Compliment=You%20are%20doing%2
 ```
 Note that `Length` is a .NET property of a `System.String`. All public instance properties (and properties of properties) are available for references from meta-conditions like `add` and `select`.
 
-Now, let's try getting some Excel files. For this, we set the `Accept` header to `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. RESTar will automatically include a suggested file name in the `Content-Disposition` response header. Most clients honor this when receiving file attachments. Now try the requests above again.
+Now, let's try getting some Excel files. For this, we set the `Accept` header to `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. RESTar will automatically include a suggested file name in the `Content-Disposition` response header. Most clients honor this when receiving file attachments. Now try the requests above again!
+
+## Links
+[RESTar on NuGet](https://www.nuget.org/packages/RESTar/)
+
+[The RESTar specification](https://goo.gl/TIkN7m)
+
+[RESTar.SQLite on NuGet](https://www.nuget.org/packages/RESTar.SQLite/)
+
+[Dynamit on NuGet](https://www.nuget.org/packages/Dynamit/)
+
+For any questions or comments about this tutorial, or anything RESTar-related, please contact Erik at erik.von.krusenstierna@mopedo.com
