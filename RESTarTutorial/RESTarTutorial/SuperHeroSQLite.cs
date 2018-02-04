@@ -7,10 +7,10 @@ using Starcounter;
 namespace RESTarTutorial
 {
     /// <summary>
-    /// This class outlines the O/RM mapping from an included SQLite 3 database containing 
-    /// the data that is to be populated to Starcounter. This resource cannot be queried 
-    /// directly in this application. See the RESTar.SQLite NuGet package for more information 
-    /// about how to integrate SQLite with RESTar.
+    /// This class defines the mapping from an included SQLite 3 database containing 
+    /// the data that is to be populated to the Superhero Starcounter tabke. This 
+    /// resource cannot be queried directly in this application. See the RESTar.SQLite 
+    /// NuGet package for more information about how to integrate SQLite with RESTar.
     /// 
     /// Database taken from https://github.com/fivethirtyeight/data/tree/master/comic-characters
     /// - which is, in turn, taken from Marvel and DC-Comics respective sites.
@@ -31,8 +31,11 @@ namespace RESTarTutorial
             {
                 HasSecretIdentity = hero.Id == "Secret Identity",
                 Name = hero.Name,
-                Gender = hero.Sex == "Male Characters" ? "Male" :
-                    hero.Sex == "Female Characters" ? "Female" : "Other",
+                Gender = hero.Sex == "Male Characters"
+                    ? "Male"
+                    : hero.Sex == "Female Characters"
+                        ? "Female"
+                        : "Other",
                 YearIntroduced = hero.Year != 0 ? hero.Year : default(int?)
             }));
     }
