@@ -11,15 +11,14 @@ namespace RESTarTutorial
     using RESTar;
     using Starcounter;
 
-    public class Program
+    public class TutorialApp
     {
         public static void Main()
         {
-            SuperHero.ClearDemoDatabase();
-
+            Superhero.ClearDemoDatabase();
             var workingDirectory = Application.Current.WorkingDirectory;
             var sqliteProvider = new SQLiteProvider(workingDirectory, "data");
-            // SQLite is used to populate the SuperHero table with data
+            // SQLite is used here to populate the Superhero table with data
 
             RESTarConfig.Init
             (
@@ -34,47 +33,47 @@ namespace RESTarTutorial
             // The 'requireApiKey' parameter is set to 'true'. API keys are required in all incoming requests
             // The 'configFilePath' points towards the configuration file, which includes API keys
 
-            SuperHeroSQLite.LoadDemoDatabase();
+            SuperheroSQLite.LoadDemoDatabase();
         }
     }
 
     [Database, RESTar(GET, POST, PUT, PATCH, DELETE)]
-    public class SuperHero
+    public class Superhero
     {
-        public string Title { get; set; }
+        public string Name { get; set; }
+        public bool HasSecretIdentity { get; set; }
         public string Gender { get; set; }
-        public string Height { get; set; }
-        public string Weight { get; set; }
-        public string Occupation { get; set; }
+        public int? YearIntroduced { get; set; }
         public DateTime InsertedAt { get; }
-        public SuperHero() => InsertedAt = DateTime.Now;
+        public Superhero() => InsertedAt = DateTime.Now;
 
         internal static void ClearDemoDatabase() => Db.Transact(() => Db
-            .SQL<SuperHero>("SELECT t FROM RESTarTutorial.SuperHero t")
+            .SQL<Superhero>("SELECT t FROM RESTarTutorial.Superhero t")
             .ForEach(Db.Delete));
     }
 
     [RESTar(GET)]
-    public class SuperHeroReport : ISelector<SuperHeroReport>
+    public class SuperheroReport : ISelector<SuperheroReport>
     {
-        public long NumberOfSuperHeroes { get; private set; }
-        public SuperHero FirstSuperHeroInserted { get; private set; }
-        public SuperHero LastSuperHeroInserted { get; private set; }
+        public long NumberOfSuperheroes { get; private set; }
+        public Superhero FirstSuperheroInserted { get; private set; }
+        public Superhero LastSuperheroInserted { get; private set; }
 
-        public IEnumerable<SuperHeroReport> Select(IRequest<SuperHeroReport> request)
+        public IEnumerable<SuperheroReport> Select(IRequest<SuperheroReport> request)
         {
             var superHeroesOrdered = Db
-                .SQL<SuperHero>("SELECT t FROM RESTarTutorial.SuperHero t ORDER BY InsertedAt")
+                .SQL<Superhero>("SELECT t FROM RESTarTutorial.Superhero t")
+                .OrderBy(h => h.InsertedAt)
                 .ToList();
             return new[]
             {
-                new SuperHeroReport
+                new SuperheroReport
                 {
-                    NumberOfSuperHeroes = Db
-                        .SQL<long>("SELECT COUNT(t) FROM RESTarTutorial.SuperHero t")
+                    NumberOfSuperheroes = Db
+                        .SQL<long>("SELECT COUNT(t) FROM RESTarTutorial.Superhero t")
                         .FirstOrDefault(),
-                    FirstSuperHeroInserted = superHeroesOrdered.FirstOrDefault(),
-                    LastSuperHeroInserted = superHeroesOrdered.LastOrDefault(),
+                    FirstSuperheroInserted = superHeroesOrdered.FirstOrDefault(),
+                    LastSuperheroInserted = superHeroesOrdered.LastOrDefault(),
                 }
             };
         }

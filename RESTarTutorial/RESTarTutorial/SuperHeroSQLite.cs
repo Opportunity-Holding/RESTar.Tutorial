@@ -1,4 +1,5 @@
-﻿using RESTar;
+﻿using System.Linq;
+using RESTar;
 using RESTar.Linq;
 using RESTar.SQLite;
 using Starcounter;
@@ -11,26 +12,28 @@ namespace RESTarTutorial
     /// directly in this application. See the RESTar.SQLite NuGet package for more information 
     /// about how to integrate SQLite with RESTar.
     /// 
-    /// Database taken from https://github.com/RGamberini/Superhero-Database
+    /// Database taken from https://github.com/fivethirtyeight/data/tree/master/comic-characters
+    /// - which is, in turn, taken from Marvel and DC-Comics respective sites.
     /// </summary>
-    [SQLite(CustomTableName = "Heros"), RESTar(Methods.GET)]
-    public class SuperHeroSQLite : SQLiteTable
+    [SQLite(CustomTableName = "Heroes"), RESTar(Methods.GET)]
+    public class SuperheroSQLite : SQLiteTable
     {
-        [Column] public string Title { get; set; }
-        [Column] public string Gender { get; set; }
-        [Column] public string Height { get; set; }
-        [Column] public string Weight { get; set; }
-        [Column] public string Occupation { get; set; }
+        [Column] public string Name { get; set; }
+        [Column] public string Id { get; set; }
+        [Column] public string Sex { get; set; }
+        [Column] public int Year { get; set; }
 
-        public static void LoadDemoDatabase() => new Request<SuperHeroSQLite>()
+        public static void LoadDemoDatabase() => new Request<SuperheroSQLite>()
+            .WithConditions(nameof(Year), Operators.NOT_EQUALS, null)
             .GET()
-            .ForEach(hero => Db.Transact(() => new SuperHero
+            .Take(1000)
+            .ForEach(hero => Db.Transact(() => new Superhero
             {
-                Title = hero.Title,
-                Gender = hero.Gender,
-                Height = hero.Height,
-                Weight = hero.Weight,
-                Occupation = hero.Occupation
+                HasSecretIdentity = hero.Id == "Secret Identity",
+                Name = hero.Name,
+                Gender = hero.Sex == "Male Characters" ? "Male" :
+                    hero.Sex == "Female Characters" ? "Female" : "Other",
+                YearIntroduced = hero.Year != 0 ? hero.Year : default(int?)
             }));
     }
 }
