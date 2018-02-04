@@ -69,16 +69,16 @@ Output:
     "HasSecretIdentity": true,
     "Gender": "Male",
     "YearIntroduced": 1939,
-    "InsertedAt": "2018-02-04T00:20:04.7244481Z",
-    "ObjectNo": 55410
-  },
-  {
-    "Name": "Superman (Clark Kent)",
-    "HasSecretIdentity": true,
+    "InsertedAt": "2018-02-04T14:41:50.9009688Z",
+    "ObjectNo": 103464
+},
+{
+    "Name": "Aquaman (Arthur Curry)",
+    "HasSecretIdentity": false,
     "Gender": "Male",
-    "YearIntroduced": 1986,
-    "InsertedAt": "2018-02-04T00:20:07.7404397Z",
-    "ObjectNo": 55411
+    "YearIntroduced": 1941,
+    "InsertedAt": "2018-02-04T14:41:50.9633607Z",
+    "ObjectNo": 103468
 }]
 ```
 ## Exploring the parameters of `RESTarConfig.Init()`
