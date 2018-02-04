@@ -224,15 +224,11 @@ For all requests below, API keys are included (if required) in the `Authorizatio
 
 ### GET requests
 
-Get all heroes: `/superhero`
-
-Get all female heroes: `/superhero/gender=Female`
-
-Get all female heroes with secret identities: `/superhero/gender=Female&secretidentity=true`
-
-Get the first five male heroes: `/superhero/gender=Male/limit=5`
-
-Get male heroes from 6 through 10: `/superhero/gender=Male/limit=5&offset=5`
-
-Get female heroes, ordered by the year they were introduced: `/superhero/gender=Female/order_asc=yearintroduced`
+What it does | Request URI
+Get all heroes | `/superhero`
+Get all female heroes | `/superhero/gender=Female`
+Get all female heroes with secret identities | `/superhero/gender=Female&secretidentity=true`
+Get the first five male heroes | `/superhero/gender=Male/limit=5`
+Get male heroes from 6 through 10 | `/superhero/gender=Male/limit=5&offset=5`
+Get female heroes, ordered by the year they were introduced | `/superhero/gender=Female/order_asc=yearintroduced`
 
