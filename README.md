@@ -62,6 +62,8 @@ curl 'localhost:8282/myservice/superhero' -d '{
     "YearIntroduced": 1986
 }' 
 ```
+RESTar will map propertoes from JSON to the .NET class automatically. We can configure this mapping by decorating properties with the `RESTarMemberAttribute` attribute, but for now – let's keep things simple.
+
 And now, let's retrieve this data using a `GET` request ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_get.jpg)):
 ```
 curl 'localhost:8282/myservice/superhero//limit=2'
