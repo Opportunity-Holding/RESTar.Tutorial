@@ -85,6 +85,8 @@ Output:
     "ObjectNo": 103468
 }]
 ```
+Note that some properties of the `Superhero` class are read-only. They are included in GET request output, but cannot be set by remote clients. RESTar automatically includes the Starcounter `ObjectNo` for database resources.
+
 ## Exploring the parameters of `RESTarConfig.Init()`
 
 The `RESTar.RESTarConfig.Init()` method has more parameters than the ones we used above. This is the complete signature:
