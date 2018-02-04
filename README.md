@@ -220,7 +220,7 @@ To define or override the logic that is used when RESTar selects entities of a r
 OK, now we've seen the basics of what RESTar can do – and how to make data sources from a Starcounter application available over the REST API in a secure way. Next, let's look at some more advanced examples of how a client can consume a RESTar API. We will use the same application as above, and imagine that the database is now populated with `Superhero` entities. To try these requests yourself – clone this repository to your local machine and run the `RESTarTutorial` application. The application comes with an SQLite database that will automatically populate Starcounter with `Superhero` entities. If that sounded cool, you should probably check out [RESTar.SQLite](https://www.nuget.org/packages/RESTar.SQLite) on NuGet next.
 
 **Notes**
-For all requests below, API keys are included (if required) in the `Authorization` header. To include an API key, set the following as value to the `Authorization` header: `apikey <api key>` where `<api key>` is substituted with your actual API key. URIs are written as relative to the root, e.g. `/myservice` as in the application above. `/superhero` below should be understood as `localhost:8282/myservice/superhero`.
+For all requests below, API keys are included (if required) in the `Authorization` header. To include an API key, set the following as value to the `Authorization` header: `apikey <api key>` where `<api key>` is substituted with your actual API key. URIs are written as relative to the API root, e.g. `/myservice` as in the application above. `/superhero` below should be understood as `localhost:8282/myservice/superhero`.
 
 ### GET requests
 
