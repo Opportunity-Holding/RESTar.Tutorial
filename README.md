@@ -268,7 +268,7 @@ Get a compliment:                           /echo/Compliment=You%20are%20doing%2
 ```
 Note that `Length` is a .NET property of a `System.String`. All public instance properties (and properties of properties) are available for references from meta-conditions like `add` and `select`.
 
-Now, let's try getting some Excel files. For this, we set the `Accept` header to `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. Just `excel` will work too (you're welcome). For Postman, set the `Accept` header and click the arrow to the right of the **Send** button, and then **Send and Download**. This will save the Excel file to disk. Now try the requests above again!
+Now, let's try getting some Excel files. For this, we set the `Accept` header to `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. Just `excel` will work too (you're welcome). For Postman, set the `Accept` header and click the arrow to the right of the **Send** button, and then **Send and Download**. This will save the Excel file to disk. Now try some of the requests above again!
 
 ## Conclusion
 This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the specification and keep exploring what RESTar can do. If not, at least it's over now! `¯\_(ツ)_/¯`
