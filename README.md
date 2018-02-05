@@ -110,7 +110,7 @@ For now, let's focus on `requireApiKey`, and `configFilePath`. These are used to
 
 ## Role-based authorization using API keys
 
-In most use cases, we want to apply some form of role-based access control to the registered resources. Let's say only some clients should be allowed to insert and delete `Superhero` entities, while all should be able to read. To implement this, we create an XML file that will work as the configuration that RESTar reads API keys and access rights from. Let's create a new XML file in the project directory and call it "Config.xml" (the name and location can be different). Let's make its content look like this:
+In most use cases, we want to apply some form of role-based access control to the registered resources. Let's say only some clients should be allowed to insert and delete `Superhero` entities, while all should be able to read. To implement this, we create an XML file that will work as the configuration that RESTar reads API keys and access rights from. Let's create a new XML file in the project directory and call it "Config.xml". Let's make its content look like this:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
