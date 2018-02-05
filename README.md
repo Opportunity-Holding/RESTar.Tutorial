@@ -1,7 +1,7 @@
 *By Erik von Krusenstierna (erik.von.krusenstierna@mopedo.com)*
 
 # Tutorial
-RESTar is a powerful REST API framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar in your projects will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and show how to use it in a simple Starcounter application. The resulting application is availble in this repository, so you can download it and try things out for yourself. More information about RESTar is also available in the [RESTar Specification](https://goo.gl/TIkN7m).
+RESTar is a powerful REST API framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar in your projects will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and show how to use it in a simple Starcounter application. The resulting application is availble in this repository, so you can download it and try things out for yourself. For more information about RESTar, see the [RESTar Specification](https://goo.gl/TIkN7m).
 
 ## Getting started
 To get started, install RESTar from NuGet, either by browsing for `RESTar` in the **NuGet Package Manager** or by running the following command in the **Package Manager Console**:
