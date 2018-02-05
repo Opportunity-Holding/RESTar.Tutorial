@@ -32,9 +32,9 @@ namespace RESTarTutorial
             // The 'requireApiKey' parameter is set to 'true'. API keys are required in all incoming requests.
             // The 'configFilePath' points towards the configuration file, which contains API keys. In this case,
             //   this file is located in the project folder.
-            // The 'resourceProviders' parameter is used for SQLite integration (see the DemoDatabase class below)
+            // The 'resourceProviders' parameter is used for SQLite integration (see the ExampleDatabase class below)
 
-            DemoDatabase.Setup();
+            ExampleDatabase.Setup();
         }
     }
 
@@ -86,7 +86,7 @@ namespace RESTarTutorial
     /// Database is a subset of https://github.com/fivethirtyeight/data/tree/master/comic-characters
     /// - which is, in turn, taken from Marvel and DC Comics respective sites.
     /// </summary>
-    internal static class DemoDatabase
+    internal static class ExampleDatabase
     {
         internal static void Setup()
         {
