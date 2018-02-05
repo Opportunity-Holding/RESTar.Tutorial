@@ -1,10 +1,8 @@
-﻿Newtonsoft.Json.dll
-Sigil.dll
-DocumentFormat.OpenXml
-ClosedXML.dll
-ICSharpCode.SharpZipLib
+﻿Newtonsoft.Json
+DocumentFormat.OpenXML
+ClosedXml
 Excel
 System.ValueTuple
-System.Data.SQLite
 FastMember.Signed
+System.Data.SQLite
 SQLite.Interop
