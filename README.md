@@ -8,7 +8,7 @@ To get started, install RESTar from NuGet, either by browsing for `RESTar` in th
 
 ```Install-Package RESTar```
 
-All we need to do then, to enable RESTar in a given application, is to make a call to `RESTar.RESTarConfig.Init()` somewhere in the application code, preferably where it's called once every time the app starts. `Init()` will register the necessary handlers, collect all resources and make them available over a REST API. Here is a simple RESTar application:
+All we need to do then, to enable RESTar and set up a REST API for a given application, is to make a call to `RESTar.RESTarConfig.Init()` somewhere in the application code, preferably where it's called once every time the app starts. `Init()` will register the necessary HTTP handlers, collect resources and make them available over a REST API. Here is a simple RESTar application:
 
 ```c#
 namespace RESTarTutorial
@@ -25,7 +25,7 @@ namespace RESTarTutorial
     }
 }
 ```
-The application above is not very useful, however, since it doesn't really expose any app data through the REST API. Let's change that. RESTar can take a Starcounter database class and make its content available as a resource in the REST API. To show RESTar which classes to expose, we simply decorate their definitions with the `RESTarAttribute` attribute. Like this:
+The application above is not very useful, however, since it doesn't really expose any app data through the REST API. Let's change that. RESTar can take any Starcounter database class and make its content available as a resource in the REST API. To show RESTar which classes to expose, we simply decorate their definitions with the `RESTarAttribute` attribute. Like this:
 
 ```c#
 namespace RESTarTutorial
