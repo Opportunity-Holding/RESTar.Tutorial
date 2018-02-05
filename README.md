@@ -25,7 +25,7 @@ namespace RESTarTutorial
     }
 }
 ```
-The application above is not very useful, however, since it doesn't really expose any app data through the REST API. Let's change that. RESTar can take any Starcounter database class and make its content available as a resource in the REST API. To tell RESTar which classes to expose, we simply decorate their definitions with the `RESTarAttribute` attribute and provide the REST methods we would like to enable for the resource. Like this:
+The application above is not very useful, however, since it doesn't really expose any app data through the REST API. Let's change that. RESTar can take any Starcounter database class and make its content available as a resource in the REST API. To tell RESTar which classes to expose, we simply decorate their definitions with the `RESTarAttribute` attribute and provide the REST methods we would like to enable for the resource in its constructor. Like this:
 
 ```c#
 namespace RESTarTutorial
