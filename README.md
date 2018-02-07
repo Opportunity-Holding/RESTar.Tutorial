@@ -274,12 +274,12 @@ Now, let's try getting some Excel files. For this, we set the `Accept` header to
 This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the specification and keep exploring what RESTar can do. If not, at least it's over now! `¯\_(ツ)_/¯`
 
 ## Links
-[RESTar on NuGet](https://www.nuget.org/packages/RESTar/)
+[❯   RESTar on NuGet](https://www.nuget.org/packages/RESTar/)
 
-[The RESTar specification](https://goo.gl/TIkN7m)
+[❯   The RESTar specification](https://goo.gl/TIkN7m)
 
-[RESTar.SQLite on NuGet](https://www.nuget.org/packages/RESTar.SQLite/)
+[❯   RESTar.SQLite on NuGet](https://www.nuget.org/packages/RESTar.SQLite/)
 
-[Dynamit on NuGet](https://www.nuget.org/packages/Dynamit/)
+[❯   Dynamit on NuGet](https://www.nuget.org/packages/Dynamit/)
 
 For any questions or comments about this tutorial, or anything RESTar-related, please contact Erik at erik.von.krusenstierna@mopedo.com
