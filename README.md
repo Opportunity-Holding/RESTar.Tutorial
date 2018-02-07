@@ -6,7 +6,9 @@ RESTar is a powerful REST API framework for Starcounter applications, that is fr
 ## Getting started
 To get started, install RESTar from NuGet, either by browsing for `RESTar` in the **NuGet Package Manager** or by running the following command in the **Package Manager Console**:
 
-```Install-Package RESTar```
+```
+Install-Package RESTar
+```
 
 All we need to do then, to enable RESTar and set up a REST API for a given application, is to make a call to `RESTar.RESTarConfig.Init()` somewhere in the application code, preferably where it's called once every time the app starts. `Init()` will register the necessary HTTP handlers, collect resources and make them available over a REST API. Here is a simple RESTar application:
 
