@@ -21,7 +21,7 @@ namespace RESTarTutorial
             RESTarConfig.Init
             (
                 port: 8282,
-                uri: "/myservice",
+                uri: "/api",
                 requireApiKey: true,
                 configFilePath: projectFolder + "/Config.xml",
                 resourceProviders: new[] {new SQLiteProvider(projectFolder, "data")}

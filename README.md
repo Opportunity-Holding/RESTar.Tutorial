@@ -20,7 +20,7 @@ namespace RESTarTutorial
     {
         public static void Main()
         {
-            RESTarConfig.Init(port: 8282, uri: "/myservice");
+            RESTarConfig.Init(port: 8282, uri: "/api");
             // The 'port' argument sets the HTTP port on which to register the REST handlers
             // The 'uri' argument sets the root uri of the REST API
         }
@@ -150,7 +150,7 @@ namespace RESTarTutorial
             RESTarConfig.Init
             (
                 port: 8282,
-                uri: "/myservice",
+                uri: "/api",
                 requireApiKey: true,
                 configFilePath: Application.Current.WorkingDirectory + "/Config.xml"
             );
