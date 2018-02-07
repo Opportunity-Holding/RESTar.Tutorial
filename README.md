@@ -263,22 +263,21 @@ The first 10 superheroes:                   /superhero//limit=10
 Superheroes 15 to 20 (exclusive):           /superhero//limit=5&offset=14
 All female superheroes:                     /superhero/gender=Female
 5 male heroes with secret identities:       /superhero/gender=Male&hassecretidentity=true/limit=5
-Female heroes introduced since 1990:        /superhero/gender=Female&yearintroduced>1989
+Female heroes introduced since 1990:        /superhero/gender=Female&yearintroduced>=1990
 All male superhereoes' names:               /superhero/gender=Male/select=Name
-  | Add the length of the name:             /superhero/gender=Male/add=name.length&select=name,name.length
-  | And order by name length:               /superhero/gender=Male/add=name.length&select=name,name.length&order_asc=name.length
+  | + length of the name:                   /superhero/gender=Male/add=name.length&select=name,name.length
+  | Ordered by name length:                 /superhero/gender=Male/add=name.length&select=name,name.length&order_asc=name.length
 Years when a superhero was introduced:      /superhero//select=yearintroduced&distinct=true&order_asc=yearintroduced
 Make a superhero report:                    /superheroreport
-  | Include the week day when the first
-  | superhero was inserted as "Day"       /superheroreport//add=firstsuperheroinserted.insertedat.dayofweek&rename=firstsuperheroinserted.insertedat.dayofweek->Day
-Get a compliment:                           /echo/Compliment=You%20are%20doing%20really%20well.%20Isn%27t%20this%20a%20nice%20API%3F%20Oh%2C%20sorry%2C%20did%20I%20say%20this%20was%20a%20complement%20to%20you%2C%20and%20not%20to%20me%3F
+  | + weekday of first inserted as "Day"    /superheroreport//add=firstsuperheroinserted.insertedat.dayofweek&rename=firstsuperheroinserted.insertedat.dayofweek->Day
+Get a compliment:                           /echo/Compliment=Well%20done%21%20Isn%27t%20this%20cool%3F%20Oh%2C%20sorry%2C%20did%20you%20think%20this%20would%20be%20a%20complement%20for%20you%3F
 ```
 Note that `Length` is a .NET property of a `System.String`. All public instance properties (and properties of properties) are available for references from meta-conditions like `add` and `select`.
 
 Now, let's try getting some Excel files. For this, we set the `Accept` header to `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. Just `excel` will work too (you're welcome). For Postman, set the `Accept` header and click the arrow to the right of the **Send** button, and then **Send and Download**. This will save the Excel file to disk. Now try some of the requests above again!
 
 ## Conclusion
-This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the specification and keep exploring what RESTar can do. If not, at least it's over now! `¯\_(ツ)_/¯`
+This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the [specification](https://goo.gl/TIkN7m) and keep exploring what RESTar can do. If not, at least it's over now! [`¯\_(ツ)_/¯`](https://www.google.se/search?dcr=0&tbm=vid&ei=SvJ6Wt-KK4efsAG3rqjgCA&q=I+just+read+a+boring+tutorial%2C+can+I+have+some+cat+videos+or+something%3F&oq=I+just+read+a+boring+tutorial%2C+can+I+have+some+cat+videos+or+something%3F)
 
 ## Links
 [❯   RESTar on NuGet](https://www.nuget.org/packages/RESTar/)
