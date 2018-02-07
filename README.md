@@ -62,7 +62,7 @@ curl 'localhost:8282/myservice/superhero' -d '{
     "HasSecretIdentity": true,
     "Gender": "Male",
     "YearIntroduced": 1986
-}' 
+}'
 ```
 **Notes:** RESTar will map properties from JSON to the .NET class automatically. We can configure this mapping by decorating properties with the `RESTarMemberAttribute` attribute, but for now – let's keep things simple.
 
@@ -95,7 +95,7 @@ The `RESTar.RESTarConfig.Init()` method has more parameters than the ones we use
 ```c#
 static void Init
 (
-    ushort port = 8282, 
+    ushort port = 8282,
     string uri = "/rest",
     bool viewEnabled = false,
     bool setupMenu = false,
@@ -108,7 +108,7 @@ static void Init
     IEnumerable<ResourceProvider> resourceProviders = null
 );
 ```
-For now, let's focus on `requireApiKey`, and `configFilePath`. These are used to control external access to the REST API. 
+For now, let's focus on `requireApiKey`, and `configFilePath`. These are used to control external access to the REST API.
 
 ## Role-based authorization using API keys
 
@@ -126,7 +126,7 @@ In most use cases, we want to apply some form of role-based access control to th
       <Resource>RESTarTutorial.*</Resource>
       <Methods>*</Methods>
     </AllowAccess>
-  </ApiKey>  
+  </ApiKey>
   <ApiKey>
     <Key>a-secure-user-key</Key>
     <AllowAccess>
@@ -223,11 +223,11 @@ namespace RESTarTutorial
 ```
 
 To define or override the logic that is used when RESTar selects entities of a resource type, we implement the `RESTar.ISelector<T>` interface, and use the resource type as the type parameter `T`. Failure to provide the operations needed for the methods assigned in the `RESTarAttribute` constructor will result in a kind but firm runtime exception. In the body of this `Select` method above, we provide logic for generating an `IEnumerable<SuperheroReport>` that is then returned to RESTar when evaluating `GET` requests.
- 
+
 ## Making requests
 OK, now we've seen the basics of what RESTar can do – and how to make data sources from a Starcounter application available over the REST API in a secure way. One of the really cool things about RESTar, which we haven't really explored yet, is the flexibility and power it gives clients that consume the REST API. Included in RESTar is a wide range of operations and utilities that make API consumption simple, powerful, fast and easy to debug. This tutorial cannot possibly cover it all, but we'll provide some examples below.
 
-We will use the same application as earlier, and imagine that the database is now populated with `Superhero` entities. To try things out yourself – clone this repository to your local machine and run the `RESTarTutorial` application. The application comes with an SQLite database out of the box that will automatically populate Starcounter with `Superhero` entities. If that sounded cool, *which it totally is*, you should check out [RESTar.SQLite](https://www.nuget.org/packages/RESTar.SQLite) on NuGet after this.
+We will use the same application as earlier, and imagine that the database is now populated with `Superhero` entities. To try things out yourself – clone this repository to your local machine and run the `RESTarTutorial` application. The application comes with an SQLite database that will automatically populate Starcounter with `Superhero` entities. If that sounded cool, *which it totally is*, you should check out [RESTar.SQLite](https://www.nuget.org/packages/RESTar.SQLite) on NuGet after this.
 
 ### URI crash course
 A RESTar URI consists of three parts after the service root, separated by forward slashes (`/`):
@@ -259,13 +259,18 @@ The URIs below are all relative to the template URI. So the relative URI `/super
 
 ```
 All superheroes:                            /superhero
-The first 100 superheroes:                  /superhero//limit=100
+The first 10 superheroes:                   /superhero//limit=10
 Superheroes 15 to 20 (exclusive):           /superhero//limit=5&offset=14
 All female superheroes:                     /superhero/gender=Female
+5 male heroes with secret identities:       /superhero/gender=Male&hassecretidentity=true/limit=5
+Female heroes introduced since 1990:        /superhero/gender=Female&yearintroduced>1989
 All male superhereoes' names:               /superhero/gender=Male/select=Name
   | Add the length of the name:             /superhero/gender=Male/add=name.length&select=name,name.length
   | And order by name length:               /superhero/gender=Male/add=name.length&select=name,name.length&order_asc=name.length
 Years when a superhero was introduced:      /superhero//select=yearintroduced&distinct=true&order_asc=yearintroduced
+Make a superhero report:                    /superheroreport
+  | Include the week day when the first
+  | superhero was inserted as "Day"       /superheroreport//add=firstsuperheroinserted.insertedat.dayofweek&rename=firstsuperheroinserted.insertedat.dayofweek->Day
 Get a compliment:                           /echo/Compliment=You%20are%20doing%20really%20well.%20Isn%27t%20this%20a%20nice%20API%3F%20Oh%2C%20sorry%2C%20did%20I%20say%20this%20was%20a%20complement%20to%20you%2C%20and%20not%20to%20me%3F
 ```
 Note that `Length` is a .NET property of a `System.String`. All public instance properties (and properties of properties) are available for references from meta-conditions like `add` and `select`.
