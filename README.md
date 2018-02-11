@@ -101,8 +101,7 @@ Output:
 The `RESTar.RESTarConfig.Init()` method has more parameters than the ones we used above. This is the complete signature:
 
 ```csharp
-static void Init
-(
+static void Init(
     ushort port = 8282,
     string uri = "/rest",
     bool requireApiKey = false,
@@ -156,8 +155,7 @@ namespace RESTarTutorial
     {
         public static void Main()
         {
-            RESTarConfig.Init
-            (
+            RESTarConfig.Init(
                 port: 8282,
                 uri: "/api",
                 requireApiKey: true,
