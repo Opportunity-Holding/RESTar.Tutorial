@@ -14,7 +14,7 @@ Install-Package RESTar
 
 All we need to do then, to enable RESTar and set up a REST API for a given application, is to make a call to `RESTar.RESTarConfig.Init()` somewhere in the application code, preferably where it's called once every time the app starts. `Init()` will register the necessary HTTP handlers, collect resources and make them available over a REST API. Here is a simple RESTar application:
 
-```c#
+```csharp
 namespace RESTarTutorial
 {
     using RESTar;
@@ -32,7 +32,7 @@ namespace RESTarTutorial
 
 The application above is not very useful, however, since it doesn't really expose any app data through the REST API. Let's change that. RESTar can take any Starcounter database class and make its content available as a resource in the REST API. To tell RESTar which classes to expose, we simply decorate their definitions with the `RESTarAttribute` attribute and provide the REST methods we would like to enable for the resource in its constructor. Like this:
 
-```c#
+```csharp
 namespace RESTarTutorial
 {
     using RESTar;
@@ -100,20 +100,19 @@ Output:
 
 The `RESTar.RESTarConfig.Init()` method has more parameters than the ones we used above. This is the complete signature:
 
-```c#
+```csharp
 static void Init
 (
     ushort port = 8282,
     string uri = "/rest",
-    bool viewEnabled = false,
-    bool setupMenu = false,
     bool requireApiKey = false,
     bool allowAllOrigins = true,
     string configFilePath = null,
     bool prettyPrint = true,
     ushort daysToSaveErrors = 30,
     LineEndings lineEndings = LineEndings.Windows,
-    IEnumerable<ResourceProvider> resourceProviders = null
+    IEnumerable<ResourceProvider> resourceProviders = null,
+    IEnumerable<IProtocolProvider> protocolProviders = null
 );
 ```
 
@@ -148,7 +147,7 @@ In most use cases, we want to apply some form of role-based access control to th
 
 This configuration file specifies two api keys: `a-secure-admin-key` and `a-secure-user-key`. The first can perform all methods on all resources in the `RESTar`, `RESTar.Admin`, `RESTar.Dynamic` and `RESTarTutorial` namespaces, the latter which includes our `Superhero` resource. The second key, however, can only make `GET` requests to resources in the `RESTarTutorial` namespace. To enforce these access rights, we set the `requireApiKey` parameter to `true` in the call to `RESTarConfig.Init()` and provide the file path to the configuration file in the `configFilePath` parameter. Here is the same program as above, but now with role-based access control:
 
-```c#
+```csharp
 namespace RESTarTutorial
 {
     using RESTar;
@@ -199,7 +198,7 @@ Output:
 
 To implement `SuperheroReport`, just like we would with a database resource, we create a new .NET class, and assign the `RESTarAttribute` attribute to it. This time we only need `GET` to be enabled for the resource. Note that the class below is not a Starcounter database class.
 
-```c#
+```csharp
 namespace RESTarTutorial
 {
     using RESTar;
