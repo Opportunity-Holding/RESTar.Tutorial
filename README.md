@@ -52,16 +52,16 @@ namespace RESTarTutorial
 }
 ```
 
-When `RESTarConfig.Init()` is called, RESTar will find the `Superhero` database class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/myservice/superhero` and interact with its content. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within these requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax) (or [Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_post.jpg)):
+When `RESTarConfig.Init()` is called, RESTar will find the `Superhero` database class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/api/superhero` and interact with its content. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within these requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax) (or [Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_post.jpg)):
 
 ```
-curl 'localhost:8282/myservice/superhero' -d '{
+curl 'localhost:8282/api/superhero' -d '{
     "Name": "Batman (Bruce Wayne)",
     "HasSecretIdentity": true,
     "Gender": "Male",
     "YearIntroduced": 1939
 }'
-curl 'localhost:8282/myservice/superhero' -d '{
+curl 'localhost:8282/api/superhero' -d '{
     "Name": "Superman (Clark Kent)",
     "HasSecretIdentity": true,
     "Gender": "Male",
@@ -74,7 +74,7 @@ curl 'localhost:8282/myservice/superhero' -d '{
 And now, let's retrieve this data using a `GET` request ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_get.jpg)):
 
 ```
-curl 'localhost:8282/myservice/superhero//limit=2'
+curl 'localhost:8282/api/superhero//limit=2'
 Output:
 [{
     "Name": "Batman (Bruce Wayne)",
@@ -171,7 +171,7 @@ namespace RESTarTutorial
 In the example above, we saw a Starcounter database class working as a REST resource through RESTar. Starcounter database classes make for good examples, since most Starcounter developers are familiar with them, but RESTar itself is not limited to these classes. Any public non-static class can work as a RESTar resource class – as long as the developer can define the logic that is needed to support operations like `Select`, `Insert` and `Delete` that are used in REST requests. Say, for example, that we want a REST resource that is simply a transient aggregation of database data, that is generated when requested. To go with the example above, let's say we want a `SuperheroReport` class that we can make `GET` requests to: ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_report_get.jpg))
 
 ```
-curl "localhost:8282/myservice/superheroreport" -H "Authorization: apikey a-secure-user-key"
+curl "localhost:8282/api/superheroreport" -H "Authorization: apikey a-secure-user-key"
 Output:
 [{
     "NumberOfSuperheroes": 167,
@@ -266,11 +266,11 @@ Here is the main request template used below: ([Postman](https://github.com/Mope
 
 ```
 Method:   GET
-URI:      http://localhost:8282/myservice
+URI:      http://localhost:8282/api
 Headers:  Authorization: apikey a-secure-admin-key
 ```
 
-The URIs below are all relative to the template URI. So the relative URI `/superhero` should be read as `http://localhost:8282/myservice/superhero`
+The URIs below are all relative to the template URI. So the relative URI `/superhero` should be read as `http://localhost:8282/api/superhero`
 
 ### Request examples
 
