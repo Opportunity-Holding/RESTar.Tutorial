@@ -250,7 +250,7 @@ A RESTar URI consists of three parts after the service root, separated by forwar
 2. A list of entity conditions that are either `true` or `false` of entities in the selected resource. The list items are separated with `&` characters. E.g. `gender=Female&HasSecretIdentity=false`. The key points to a property of the entity, and is not case sensitive. Values for string properties are always case sensititve.
 3. A list of meta-conditions that define rules and filters that are used in the request. These list items are also separated with `&` characters. We can, for example, include `limit=2` here to limit the output to only two entities.
 
-A complete description of all meta-conditions can be find in the [Specification](https://goo.gl/TIkN7m), but here are some that are used below:
+A complete description of all meta-conditions can be find in the [specification](https://goo.gl/TIkN7m), but here are some that are used below:
 
 Name         | Function
 :----------- | :-------------------------------------------------------------
