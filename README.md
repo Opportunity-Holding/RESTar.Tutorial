@@ -2,7 +2,7 @@ _By Erik von Krusenstierna (erik.von.krusenstierna@mopedo.com)_
 
 # Tutorial
 
-RESTar is a powerful REST API framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar in your projects will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and show how to use it in a simple Starcounter application. The resulting application is available in this repository as a Visual Studio solution, so you can download it and try things out for yourself. For more information about RESTar, see the [RESTar Specification](https://goo.gl/TIkN7m).
+RESTar is a powerful REST API framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar in your projects will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and show how to use it in a simple Starcounter application. The resulting application is available in this repository as a [Visual Studio solution](RESTarTutorial), so you can download it and try things out for yourself. For more information about RESTar, see the [RESTar Specification](https://goo.gl/TIkN7m).
 
 ## Getting started
 
@@ -30,7 +30,7 @@ namespace RESTarTutorial
 }
 ```
 
-The application above is not very useful, however, since it doesn't really expose any app data through the REST API. Let's change that. RESTar can take any Starcounter database class and make its content available as a resource in the REST API. To tell RESTar which classes to expose, we simply decorate their definitions with the `RESTarAttribute` attribute and provide the REST methods we would like to enable for the resource in its constructor. Like this:
+The application above is not very useful, however, since it doesn't expose any data through the REST API. Let's change that. RESTar can take any Starcounter database class and make its content available as a web resource in the REST API. To tell RESTar which classes to expose, we simply decorate their definitions with the `RESTarAttribute` attribute and provide the REST methods we would like to enable for the resource in its constructor. Like this:
 
 ```csharp
 namespace RESTarTutorial
@@ -52,16 +52,16 @@ namespace RESTarTutorial
 }
 ```
 
-When `RESTarConfig.Init()` is called, RESTar will find the `Superhero` database class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/myservice/superhero` and interact with its content. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within these requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax) (or [Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_post.jpg)):
+When `RESTarConfig.Init()` is called, RESTar will find the `Superhero` database class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/api/superhero` and interact with its content. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar has two supported content types, **JSON** and **Excel**, so the bodies contained within these requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax) (or [Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_post.jpg)):
 
 ```
-curl 'localhost:8282/myservice/superhero' -d '{
+curl 'localhost:8282/api/superhero' -d '{
     "Name": "Batman (Bruce Wayne)",
     "HasSecretIdentity": true,
     "Gender": "Male",
     "YearIntroduced": 1939
 }'
-curl 'localhost:8282/myservice/superhero' -d '{
+curl 'localhost:8282/api/superhero' -d '{
     "Name": "Superman (Clark Kent)",
     "HasSecretIdentity": true,
     "Gender": "Male",
@@ -74,7 +74,7 @@ curl 'localhost:8282/myservice/superhero' -d '{
 And now, let's retrieve this data using a `GET` request ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_get.jpg)):
 
 ```
-curl 'localhost:8282/myservice/superhero//limit=2'
+curl 'localhost:8282/api/superhero//limit=2'
 Output:
 [{
     "Name": "Batman (Bruce Wayne)",
@@ -171,7 +171,7 @@ namespace RESTarTutorial
 In the example above, we saw a Starcounter database class working as a REST resource through RESTar. Starcounter database classes make for good examples, since most Starcounter developers are familiar with them, but RESTar itself is not limited to these classes. Any public non-static class can work as a RESTar resource class – as long as the developer can define the logic that is needed to support operations like `Select`, `Insert` and `Delete` that are used in REST requests. Say, for example, that we want a REST resource that is simply a transient aggregation of database data, that is generated when requested. To go with the example above, let's say we want a `SuperheroReport` class that we can make `GET` requests to: ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_report_get.jpg))
 
 ```
-curl "localhost:8282/myservice/superheroreport" -H "Authorization: apikey a-secure-user-key"
+curl "localhost:8282/api/superheroreport" -H "Authorization: apikey a-secure-user-key"
 Output:
 [{
     "NumberOfSuperheroes": 167,
@@ -250,7 +250,7 @@ A RESTar URI consists of three parts after the service root, separated by forwar
 2. A list of entity conditions that are either `true` or `false` of entities in the selected resource. The list items are separated with `&` characters. E.g. `gender=Female&HasSecretIdentity=false`. The key points to a property of the entity, and is not case sensitive. Values for string properties are always case sensititve.
 3. A list of meta-conditions that define rules and filters that are used in the request. These list items are also separated with `&` characters. We can, for example, include `limit=2` here to limit the output to only two entities.
 
-A complete description of all meta-conditions can be find in the [Specification](https://goo.gl/TIkN7m), but here are some that are used below:
+A complete description of all meta-conditions can be find in the [specification](https://goo.gl/TIkN7m), but here are some that are used below:
 
 Name         | Function
 :----------- | :-------------------------------------------------------------
@@ -266,11 +266,11 @@ Here is the main request template used below: ([Postman](https://github.com/Mope
 
 ```
 Method:   GET
-URI:      http://localhost:8282/myservice
+URI:      http://localhost:8282/api
 Headers:  Authorization: apikey a-secure-admin-key
 ```
 
-The URIs below are all relative to the template URI. So the relative URI `/superhero` should be read as `http://localhost:8282/myservice/superhero`
+The URIs below are all relative to the template URI. So the relative URI `/superhero` should be read as `http://localhost:8282/api/superhero`
 
 ### Request examples
 
