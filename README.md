@@ -2,7 +2,7 @@ _By Erik von Krusenstierna (erik.von.krusenstierna@mopedo.com)_
 
 # Tutorial
 
-RESTar is a powerful REST API framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar in your projects will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and show how to use it in a simple Starcounter application. The resulting application is available in this repository as a [Visual Studio solution](RESTarTutorial), so you can download it and try things out for yourself. For more information about RESTar, see the [RESTar Specification](https://goo.gl/TIkN7m).
+RESTar is a powerful REST API framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar in your projects will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and show how to use it in a simple Starcounter application. The resulting application is available in this repository as a [Visual Studio solution](RESTarTutorial), so you can download it and try things out for yourself. For more information about RESTar, see the [RESTar Specification](https://github.com/Mopedo/Home/tree/master/Documentation/RESTar).
 
 ## Getting started
 
@@ -240,7 +240,7 @@ To define or override the logic that is used when RESTar selects entities of a r
 
 OK, now we've seen the basics of what RESTar can do – and how to make data sources from a Starcounter application available over the REST API in a secure way. One of the really cool things about RESTar, which we haven't really explored yet, is the flexibility and power it gives clients that consume the REST API. Included in RESTar is a wide range of operations and utilities that make API consumption simple, powerful, fast and easy to debug. This tutorial cannot possibly cover it all, but we'll provide some examples below.
 
-We will use the same application as earlier, and imagine that the database is now populated with `Superhero` entities. To try things out yourself – clone this repository to your local machine and run the `RESTarTutorial` application. The application comes with an SQLite database that will automatically populate Starcounter with `Superhero` entities. If that sounded cool, _which it totally is_, you should check out [RESTar.SQLite](https://www.nuget.org/packages/RESTar.SQLite) on NuGet after this.
+We will use the same application as earlier, and imagine that the database is now populated with `Superhero` entities. To try things out yourself – clone this repository to your local machine and run the `RESTarTutorial` application. The application comes with an SQLite database that will automatically populate Starcounter with `Superhero` entities. If that sounded cool, _which it totally is_, you should check out [RESTar.SQLite](https://github.com/Mopedo/RESTar.SQLite) after this.
 
 ### URI crash course
 
@@ -250,7 +250,7 @@ A RESTar URI consists of three parts after the service root, separated by forwar
 2. A list of entity conditions that are either `true` or `false` of entities in the selected resource. The list items are separated with `&` characters. E.g. `gender=Female&HasSecretIdentity=false`. The key points to a property of the entity, and is not case sensitive. Values for string properties are always case sensititve.
 3. A list of meta-conditions that define rules and filters that are used in the request. These list items are also separated with `&` characters. We can, for example, include `limit=2` here to limit the output to only two entities.
 
-A complete description of all meta-conditions can be find in the [specification](https://goo.gl/TIkN7m), but here are some that are used below:
+A complete description of all meta-conditions can be find in the [specification](https://github.com/Mopedo/Home/blob/master/Documentation/RESTar/Consuming%20a%20RESTar%20API/URI/Meta-conditions.md), but here are some that are used below:
 
 Name         | Function
 :----------- | :-------------------------------------------------------------
@@ -296,16 +296,16 @@ Now, let's try getting some Excel files. For this, we set the `Accept` header to
 
 ## Conclusion
 
-This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the [specification](https://goo.gl/TIkN7m) and keep exploring what RESTar can do. If not, at least it's over now! [`¯\_(ツ)_/¯`](https://www.google.se/search?dcr=0&tbm=vid&ei=SvJ6Wt-KK4efsAG3rqjgCA&q=I+just+read+a+boring+tutorial%2C+can+I+have+some+cat+videos+or+something%3F&oq=I+just+read+a+boring+tutorial%2C+can+I+have+some+cat+videos+or+something%3F)
+This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the [specification](https://github.com/Mopedo/Home/tree/master/Documentation/RESTar) and keep exploring what RESTar can do. If not, at least it's over now! [`¯\_(ツ)_/¯`](https://www.google.se/search?dcr=0&tbm=vid&ei=SvJ6Wt-KK4efsAG3rqjgCA&q=I+just+read+a+boring+tutorial%2C+can+I+have+some+cat+videos+or+something%3F&oq=I+just+read+a+boring+tutorial%2C+can+I+have+some+cat+videos+or+something%3F)
 
 ## Links
 
+[• The RESTar specification](https://github.com/Mopedo/Home/tree/master/Documentation/RESTar)
+
 [• RESTar on NuGet](https://www.nuget.org/packages/RESTar/)
 
-[• The RESTar specification](https://goo.gl/TIkN7m)
+[• RESTar.SQLite](https://github.com/Mopedo/RESTar.SQLite)
 
-[• RESTar.SQLite on NuGet](https://www.nuget.org/packages/RESTar.SQLite/)
-
-[• Dynamit on NuGet](https://www.nuget.org/packages/Dynamit/)
+[• Dynamit](https://github.com/Mopedo/Dynamit)
 
 For any questions or comments about this tutorial, or anything RESTar-related, please contact Erik at erik.von.krusenstierna@mopedo.com
