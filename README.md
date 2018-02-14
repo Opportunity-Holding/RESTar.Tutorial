@@ -2,7 +2,7 @@ _By Erik von Krusenstierna (erik.von.krusenstierna@mopedo.com)_
 
 # Tutorial
 
-RESTar is a powerful REST API framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar in your projects will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and show how to use it in a simple Starcounter application. The resulting application is available in this repository as a [Visual Studio solution](RESTarTutorial), so you can download it and try things out for yourself. For more information about RESTar, see the [RESTar Specification](https://github.com/Mopedo/Home/tree/master/Documentation/RESTar).
+RESTar is a powerful REST API framework for Starcounter applications, that is free to use and easy to set up in new or existing applications. Using RESTar in your projects will give your applications all sorts of REST super powers, with minimal effort. This tutorial will give a hands-on introduction to RESTar, and show how to use it in a simple Starcounter application. The resulting application is available in this repository as a [Visual Studio solution](RESTarTutorial), so you can download it and try things out for yourself. For more information about RESTar, see the [RESTar Specification](https://github.com/Mopedo/Home/tree/master/RESTar).
 
 ## Getting started
 
@@ -250,7 +250,7 @@ A RESTar URI consists of three parts after the service root, separated by forwar
 2. A list of entity conditions that are either `true` or `false` of entities in the selected resource. The list items are separated with `&` characters. E.g. `gender=Female&HasSecretIdentity=false`. The key points to a property of the entity, and is not case sensitive. Values for string properties are always case sensititve.
 3. A list of meta-conditions that define rules and filters that are used in the request. These list items are also separated with `&` characters. We can, for example, include `limit=2` here to limit the output to only two entities.
 
-A complete description of all meta-conditions can be find in the [specification](https://github.com/Mopedo/Home/blob/master/Documentation/RESTar/Consuming%20a%20RESTar%20API/URI/Meta-conditions.md), but here are some that are used below:
+A complete description of all meta-conditions can be find in the [specification](https://github.com/Mopedo/Home/blob/master/RESTar/Consuming%20a%20RESTar%20API/URI/Meta-conditions.md), but here are some that are used below:
 
 Name         | Function
 :----------- | :-------------------------------------------------------------
@@ -296,11 +296,11 @@ Now, let's try getting some Excel files. For this, we set the `Accept` header to
 
 ## Conclusion
 
-This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the [specification](https://github.com/Mopedo/Home/tree/master/Documentation/RESTar) and keep exploring what RESTar can do. If not, at least it's over now! [`¯\_(ツ)_/¯`](https://www.google.se/search?dcr=0&tbm=vid&ei=SvJ6Wt-KK4efsAG3rqjgCA&q=I+just+read+a+boring+tutorial%2C+can+I+have+some+cat+videos+or+something%3F&oq=I+just+read+a+boring+tutorial%2C+can+I+have+some+cat+videos+or+something%3F)
+This concludes the tutorial. Hopefully you found some of it interesting and will continue by reading the [specification](https://github.com/Mopedo/Home/tree/master/RESTar) and keep exploring what RESTar can do. If not, at least it's over now! [`¯\_(ツ)_/¯`](https://www.google.se/search?dcr=0&tbm=vid&ei=SvJ6Wt-KK4efsAG3rqjgCA&q=I+just+read+a+boring+tutorial%2C+can+I+have+some+cat+videos+or+something%3F&oq=I+just+read+a+boring+tutorial%2C+can+I+have+some+cat+videos+or+something%3F)
 
 ## Links
 
-[• The RESTar specification](https://github.com/Mopedo/Home/tree/master/Documentation/RESTar)
+[• The RESTar specification](https://github.com/Mopedo/Home/tree/master/RESTar)
 
 [• RESTar on NuGet](https://www.nuget.org/packages/RESTar/)
 
