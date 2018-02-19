@@ -72,7 +72,7 @@ namespace RESTarTutorial
                 {
                     NumberOfSuperheroes = superHeroesOrdered.Count,
                     FirstSuperheroInserted = superHeroesOrdered.FirstOrDefault(),
-                    LastSuperheroInserted = superHeroesOrdered.LastOrDefault(),
+                    LastSuperheroInserted = superHeroesOrdered.LastOrDefault()
                 }
             };
         }
