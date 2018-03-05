@@ -223,9 +223,7 @@ namespace RESTarTutorial
             {
                 new SuperheroReport
                 {
-                    NumberOfSuperheroes = Db
-                        .SQL<long>("SELECT COUNT(t) FROM RESTarTutorial.Superhero t")
-                        .FirstOrDefault(),
+                    NumberOfSuperheroes = superHeroesOrdered.Count,
                     FirstSuperheroInserted = superHeroesOrdered.FirstOrDefault(),
                     LastSuperheroInserted = superHeroesOrdered.LastOrDefault(),
                 }
