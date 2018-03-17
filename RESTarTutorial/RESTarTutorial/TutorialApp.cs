@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
+using RESTar;
+using Starcounter;
 using RESTar.Linq;
 using RESTar.SQLite;
 using static RESTar.Methods;
 
 namespace RESTarTutorial
 {
-    using RESTar;
-    using Starcounter;
+    #region Tutorial 1
 
     /// <summary>
     /// A simple RESTar application
@@ -78,6 +83,103 @@ namespace RESTarTutorial
             };
         }
     }
+
+    #endregion
+
+    #region Tutorial 2
+
+    /// <summary>
+    /// RESTar will generate an instance of this class when a client makes a GET request  to /chatbot 
+    /// with a WebSocket handshake.
+    /// </summary>
+    [RESTar]
+    public class Chatbot : ITerminal
+    {
+        /// <summary>
+        /// Each time this class is instantiated, an IWebSocket instance will be assigned to the 
+        /// WebSocket property. This object holds the WebSocket connection to the connected client. 
+        /// We can, for example, send text to the client by making a call to WebSocket.SendText().
+        /// </summary>
+        public IWebSocket WebSocket { private get; set; }
+
+        /// <summary>
+        /// This method is called when the WebSocket is opened towards this Chatbot instance. A perfect 
+        /// time to send a welcome message.
+        /// </summary>
+        public void Open() => WebSocket.SendText(
+            "> Hi, I'm a chatbot! Type anything, and I'll try my best to answer. I like to tell jokes... " +
+            "(type QUIT to return to the shell)"
+        );
+
+        /// <summary>
+        /// Here we inform RESTar that instances of Chatbot can handle text input
+        /// </summary>
+        public bool SupportsTextInput { get; } = true;
+
+        /// <summary>
+        /// ... but not binary input
+        /// </summary>
+        public bool SupportsBinaryInput { get; } = false;
+
+        /// <summary>
+        /// This method defines the logic that is run when an incoming text message is received over the 
+        /// WebSocket that is assigned to this terminal.
+        /// </summary>
+        public void HandleTextInput(string input)
+        {
+            if (string.Equals(input, "quit", StringComparison.OrdinalIgnoreCase))
+            {
+                WebSocket.SendToShell();
+                return;
+            }
+            var response = ChatbotAPI.GetResponse(input);
+            WebSocket.SendText(response);
+        }
+
+        /// <summary>
+        /// We still need to implement this method, but it is never called, since SupportsBinaryInput is 
+        /// set to false.
+        /// </summary>
+        public void HandleBinaryInput(byte[] input) => throw new NotImplementedException();
+
+        #region DialogFlow API
+
+        /// <summary>
+        /// A simple API for a pre-defined DialogFlow chatbot.
+        /// </summary>
+        private static class ChatbotAPI
+        {
+            private const string AccessToken = "6d7be132f63e48bab18531ec41364673";
+            private static readonly AuthenticationHeaderValue Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
+            private static readonly HttpClient HttpClient = new HttpClient();
+            private static readonly string SessionId = Guid.NewGuid().ToString();
+
+            /// <summary>
+            /// Sends the input to the chatbot service API, and returns the text response
+            /// </summary>
+            internal static string GetResponse(string input)
+            {
+                var uri = $"https://api.dialogflow.com/v1/query?v=20170712&query={WebUtility.UrlEncode(input)}" +
+                          $"&lang=en&sessionId={SessionId}&timezone={TimeZone.CurrentTimeZone}";
+                var message = new HttpRequestMessage(HttpMethod.Get, uri) {Headers = {Authorization = Authorization}};
+                var response = HttpClient.SendAsync(message).Result.Content.ReadAsStringAsync().Result;
+                var responseText = JObject.Parse(response)?["result"]?["fulfillment"]?["speech"]?.Value<string>();
+                if (string.IsNullOrWhiteSpace(responseText))
+                    responseText = "I have no response to that. Sorry...";
+                return responseText;
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// If the terminal resource has additional resources tied to an instance, this is were we release 
+        /// them.
+        /// </summary>
+        public void Dispose() { }
+    }
+
+    #endregion
 
     #region Demo database
 
