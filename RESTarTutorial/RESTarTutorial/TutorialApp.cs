@@ -198,8 +198,8 @@ namespace RESTarTutorial
         private string _name;
 
         /// <summary>
-        /// The name of the connected chat room participant. To change this, write #terminal {"Name": "new name"}
-        /// while in the chat room.
+        /// The name of the connected chat room participant. To change this, we can write 
+        /// #terminal {"Name": "new name"} while in the chat room.
         /// </summary>
         public string Name
         {

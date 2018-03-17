@@ -289,7 +289,7 @@ Make a superhero report:                    /superheroreport
 Get a compliment:                           /echo/Compliment=Well%20done%21%20Isn%27t%20this%20cool%3F%20Oh%2C%20sorry%2C%20did%20you%20think%20this%20would%20be%20a%20complement%20for%20you%3F
 ```
 
-Note that `Length` is a .NET property of a `System.String`. All public instance properties (and properties of properties) are available for references from meta-conditions like `add` and `select`.
+Note that we can use the `Length` .NET property of `System.String` in queries. All public instance properties (and properties of properties) are available for references from meta-conditions like `add` and `select`.
 
 Now, let's try getting some Excel files. For this, we set the `Accept` header to `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. Just `excel` will work too (you're welcome). For Postman, set the `Accept` header and click the arrow to the right of the **Send** button, and then **Send and Download**. This will save the Excel file to disk. Now try some of the requests above again!
 
