@@ -11,6 +11,8 @@ using RESTar.Linq;
 using RESTar.SQLite;
 using static RESTar.Methods;
 
+// ReSharper disable InheritdocConsiderUsage
+
 namespace RESTarTutorial
 {
     #region Tutorial 1
@@ -61,7 +63,6 @@ namespace RESTarTutorial
         public Superhero FirstSuperheroInserted { get; private set; }
         public Superhero LastSuperheroInserted { get; private set; }
 
-        /// <inheritdoc />
         /// <summary>
         /// This method returns an IEnumerable of the resource type. RESTar will call this 
         /// on GET requests and send the results back to the client as e.g. JSON.
@@ -89,7 +90,7 @@ namespace RESTarTutorial
     #region Tutorial 2
 
     /// <summary>
-    /// RESTar will generate an instance of this class when a client makes a GET request  to /chatbot 
+    /// RESTar will generate an instance of this class when a client makes a GET request to /chatbot 
     /// with a WebSocket handshake.
     /// </summary>
     [RESTar]
@@ -132,8 +133,14 @@ namespace RESTarTutorial
                 WebSocket.SendToShell();
                 return;
             }
-            var response = ChatbotAPI.GetResponse(input);
+            var response = GetChatbotResponse(input);
             WebSocket.SendText(response);
+        }
+
+        internal static string GetChatbotResponse(string input)
+        {
+            return ChatbotAPI.GetResponse(input).result?.fulfillment?.speech
+                   ?? "I have no response to that. Sorry...";
         }
 
         /// <summary>
@@ -157,16 +164,13 @@ namespace RESTarTutorial
             /// <summary>
             /// Sends the input to the chatbot service API, and returns the text response
             /// </summary>
-            internal static string GetResponse(string input)
+            internal static dynamic GetResponse(string input)
             {
                 var uri = $"https://api.dialogflow.com/v1/query?v=20170712&query={WebUtility.UrlEncode(input)}" +
                           $"&lang=en&sessionId={SessionId}&timezone={TimeZone.CurrentTimeZone}";
                 var message = new HttpRequestMessage(HttpMethod.Get, uri) {Headers = {Authorization = Authorization}};
                 var response = HttpClient.SendAsync(message).Result.Content.ReadAsStringAsync().Result;
-                var responseText = JObject.Parse(response)?["result"]?["fulfillment"]?["speech"]?.Value<string>();
-                if (string.IsNullOrWhiteSpace(responseText))
-                    responseText = "I have no response to that. Sorry...";
-                return responseText;
+                return JObject.Parse(response);
             }
         }
 
@@ -177,6 +181,113 @@ namespace RESTarTutorial
         /// them.
         /// </summary>
         public void Dispose() { }
+    }
+
+    /// <summary>
+    /// "ChatRoom" is an appropriate name for the resource from the client's perspective, even though 
+    /// each instance of this resource will work more like a chat participant.
+    /// </summary>
+    [RESTar]
+    public class ChatRoom : ITerminal
+    {
+        /// <summary>
+        /// This collection holds all ChatRoom instances
+        /// </summary>
+        private static readonly TerminalSet<ChatRoom> Terminals = new TerminalSet<ChatRoom>();
+
+        private string _name;
+
+        /// <summary>
+        /// The name of the connected chat room participant. To change this, write #terminal {"Name": "new name"}
+        /// while in the chat room.
+        /// </summary>
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                var name = GetUniqueName(value);
+                if (Initiated)
+                    SendToAll($"# {_name} has changed name to \"{name}\"");
+                _name = name;
+            }
+        }
+
+        /// <summary>
+        /// A read-only list of all chat room participants (names).
+        /// </summary>
+        public string[] Members => Terminals.Select(t => t.Name).ToArray();
+
+        /// <summary>
+        /// The number of connected participants.
+        /// </summary>
+        public int NumberOfMembers => Terminals.Count;
+
+        /// <summary>
+        /// Used internally to track if the participant is initiated. Invisible in the API.
+        /// </summary>
+        private bool Initiated;
+
+        public void Open()
+        {
+            Name = GetUniqueName(Name);
+            SendToAll($"# {Name} has joined the chat room.");
+            Terminals.Add(this);
+            WebSocket.SendText($"# Welcome to the chat room! Your name is \"{Name}\" (type QUIT to return to the shell)");
+            Initiated = true;
+        }
+
+        /// <summary>
+        /// Creates a unique name for a participant, or deal with edge cases like a participant naming 
+        /// themselves nothing or "Chatbot".
+        /// </summary>
+        private static string GetUniqueName(string Name)
+        {
+            if (string.IsNullOrWhiteSpace(Name) || string.Equals(Name, "chatbot", StringComparison.OrdinalIgnoreCase))
+                Name = "Chatter";
+            if (!Terminals.Any(c => string.Equals(c.Name, Name, StringComparison.OrdinalIgnoreCase)))
+                return Name;
+            var modifier = 2;
+            var tempName = $"{Name} {modifier}";
+            while (Terminals.Any(c => string.Equals(c.Name, tempName, StringComparison.OrdinalIgnoreCase)))
+                tempName = $"{Name} {modifier++}";
+            return tempName;
+        }
+
+        public void Dispose()
+        {
+            Terminals.Remove(this);
+            SendToAll($"# {Name} left the chat room.");
+        }
+
+        public void HandleTextInput(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return;
+            if (string.Equals(input, "quit", StringComparison.OrdinalIgnoreCase))
+            {
+                WebSocket.SendToShell();
+                return;
+            }
+            SendToAll($"> {Name}: {input}");
+            if (input.Length > 5 && input.StartsWith("@bot ", StringComparison.OrdinalIgnoreCase))
+            {
+                var message = input.Split("@bot ")[1];
+                var response = Chatbot.GetChatbotResponse(message);
+                SendToAll($"> Chatbot: {response}");
+            }
+        }
+
+        private static void SendToAll(string message)
+        {
+            foreach (var terminal in Terminals)
+                terminal.WebSocket.SendText(message);
+        }
+
+        public IWebSocket WebSocket { private get; set; }
+        public bool SupportsTextInput { get; } = true;
+        public bool SupportsBinaryInput { get; } = false;
+        public void HandleBinaryInput(byte[] input) => throw new NotImplementedException();
     }
 
     #endregion
