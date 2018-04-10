@@ -8,8 +8,9 @@ using Newtonsoft.Json.Linq;
 using RESTar;
 using Starcounter;
 using RESTar.Linq;
+using RESTar.Operations;
 using RESTar.SQLite;
-using static RESTar.Methods;
+using static RESTar.Method;
 
 // ReSharper disable InheritdocConsiderUsage
 
@@ -133,6 +134,7 @@ namespace RESTarTutorial
                 WebSocket.SendToShell();
                 return;
             }
+
             var response = GetChatbotResponse(input);
             WebSocket.SendText(response);
         }
@@ -157,7 +159,10 @@ namespace RESTarTutorial
         private static class ChatbotAPI
         {
             private const string AccessToken = "6d7be132f63e48bab18531ec41364673";
-            private static readonly AuthenticationHeaderValue Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
+
+            private static readonly AuthenticationHeaderValue Authorization =
+                new AuthenticationHeaderValue("Bearer", AccessToken);
+
             private static readonly HttpClient HttpClient = new HttpClient();
             private static readonly string SessionId = Guid.NewGuid().ToString();
 
@@ -180,7 +185,9 @@ namespace RESTarTutorial
         /// If the terminal resource has additional resources tied to an instance, this is were we release 
         /// them.
         /// </summary>
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
     }
 
     /// <summary>
@@ -233,7 +240,8 @@ namespace RESTarTutorial
             Name = GetUniqueName(Name);
             SendToAll($"# {Name} has joined the chat room.");
             Terminals.Add(this);
-            WebSocket.SendText($"# Welcome to the chat room! Your name is \"{Name}\" (type QUIT to return to the shell)");
+            WebSocket.SendText(
+                $"# Welcome to the chat room! Your name is \"{Name}\" (type QUIT to return to the shell)");
             Initiated = true;
         }
 
@@ -269,6 +277,7 @@ namespace RESTarTutorial
                 WebSocket.SendToShell();
                 return;
             }
+
             SendToAll($"> {Name}: {input}");
             if (input.Length > 5 && input.StartsWith("@bot ", StringComparison.OrdinalIgnoreCase))
             {
@@ -309,16 +318,15 @@ namespace RESTarTutorial
             Db.Transact(() => Db
                 .SQL<Superhero>("SELECT t FROM RESTarTutorial.Superhero t")
                 .ForEach(Db.Delete));
-            new Request<SuperheroSQLite>()
-                .WithConditions("Year", Operators.NOT_EQUALS, null)
-                .GET()
-                .ForEach(hero => Db.Transact(() => new Superhero
-                {
-                    Name = hero.Name,
-                    YearIntroduced = hero.Year != 0 ? hero.Year : default(int?),
-                    HasSecretIdentity = hero.Id == "Secret Identity",
-                    Gender = hero.Sex == "Male Characters" ? "Male" : hero.Sex == "Female Characters" ? "Female" : "Other",
-                }));
+            var request = Context.Root.CreateRequest<SuperheroSQLite>(GET);
+            request.Conditions.Add("Year", Operators.NOT_EQUALS, null);
+            request.ResultEntities.ForEach(hero => Db.Transact(() => new Superhero
+            {
+                Name = hero.Name,
+                YearIntroduced = hero.Year != 0 ? hero.Year : default(int?),
+                HasSecretIdentity = hero.Id == "Secret Identity",
+                Gender = hero.Sex == "Male Characters" ? "Male" : hero.Sex == "Female Characters" ? "Female" : "Other",
+            }));
         }
     }
 
