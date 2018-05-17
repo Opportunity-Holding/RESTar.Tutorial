@@ -8,8 +8,11 @@ using Newtonsoft.Json.Linq;
 using RESTar;
 using Starcounter;
 using RESTar.Linq;
-using RESTar.Operations;
+using RESTar.Requests;
+using RESTar.Resources;
+using RESTar.Resources.Operations;
 using RESTar.SQLite;
+using RESTar.WebSockets;
 using static RESTar.Method;
 
 // ReSharper disable InheritdocConsiderUsage
@@ -131,7 +134,7 @@ namespace RESTarTutorial
         {
             if (string.Equals(input, "quit", StringComparison.OrdinalIgnoreCase))
             {
-                WebSocket.SendToShell();
+                WebSocket.DirectToShell();
                 return;
             }
 
@@ -185,9 +188,7 @@ namespace RESTarTutorial
         /// If the terminal resource has additional resources tied to an instance, this is were we release 
         /// them.
         /// </summary>
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
     }
 
     /// <summary>
@@ -274,7 +275,7 @@ namespace RESTarTutorial
                 return;
             if (string.Equals(input, "quit", StringComparison.OrdinalIgnoreCase))
             {
-                WebSocket.SendToShell();
+                WebSocket.DirectToShell();
                 return;
             }
 
@@ -318,15 +319,26 @@ namespace RESTarTutorial
             Db.Transact(() => Db
                 .SQL<Superhero>("SELECT t FROM RESTarTutorial.Superhero t")
                 .ForEach(Db.Delete));
-            var request = Context.Root.CreateRequest<SuperheroSQLite>(GET);
-            request.Conditions.Add("Year", Operators.NOT_EQUALS, null);
-            request.ResultEntities.ForEach(hero => Db.Transact(() => new Superhero
+
+            // The Root context has access to all resources, and can only be used internally
+            using (var request = Context.Root.CreateRequest<SuperheroSQLite>())
             {
-                Name = hero.Name,
-                YearIntroduced = hero.Year != 0 ? hero.Year : default(int?),
-                HasSecretIdentity = hero.Id == "Secret Identity",
-                Gender = hero.Sex == "Male Characters" ? "Male" : hero.Sex == "Female Characters" ? "Female" : "Other",
-            }));
+                request.Conditions.Add("Year", Operators.NOT_EQUALS, null);
+                using (var superheroes = request.EvaluateToEntities())
+                {
+                    foreach (var hero in superheroes)
+                    {
+                        // Create a Starcounter Superhero instance from a SQLite row
+                        Db.TransactAsync(() => new Superhero
+                        {
+                            Name = hero.Name,
+                            YearIntroduced = hero.Year != 0 ? hero.Year : default(int?),
+                            HasSecretIdentity = hero.Id == "Secret Identity",
+                            Gender = hero.Sex == "Male Characters" ? "Male" : hero.Sex == "Female Characters" ? "Female" : "Other",
+                        });
+                    }
+                }
+            }
         }
     }
 
