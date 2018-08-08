@@ -18,6 +18,9 @@ All we need to do then, to enable RESTar and set up a REST API for a given appli
 namespace RESTarTutorial
 {
     using RESTar;
+    using Starcounter;
+    using static RESTar.Methods;
+
     public class TutorialApp
     {
         public static void Main()
@@ -30,7 +33,7 @@ namespace RESTarTutorial
 }
 ```
 
-The application above is not very useful, however, since it doesn't expose any data through the REST API. Let's change that. RESTar can take any Starcounter database class and make its content available as a web resource in the REST API. To tell RESTar which classes to expose, we simply decorate their definitions with the `RESTarAttribute` attribute and provide the REST methods we would like to enable for the resource in its constructor. Like this:
+The application above is not very useful, however, since it doesn't expose any data through the REST API. Let's change that. RESTar can take any Starcounter database class and make its content available as a web resource in the REST API. To tell RESTar which classes to expose, we simply decorate their definitions with the `RESTarAttribute` attribute and provide the REST methods we would like to enable for the resource in its constructor. Let's add a web resource to our application:
 
 ```csharp
 namespace RESTarTutorial
@@ -38,6 +41,14 @@ namespace RESTarTutorial
     using RESTar;
     using Starcounter;
     using static RESTar.Methods;
+
+    public class TutorialApp
+    {
+        public static void Main()
+        {
+            RESTarConfig.Init(port: 8282, uri: "/api");
+        }
+    }
 
     [Database, RESTar(GET, POST, PUT, PATCH, DELETE)]
     public class Superhero
@@ -52,21 +63,21 @@ namespace RESTarTutorial
 }
 ```
 
-When `RESTarConfig.Init()` is called, RESTar will find the `Superhero` database class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/api/superhero` and interact with its content. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar can read and write **JSON** and **Excel**, so the bodies contained within these requests can be of either of these formats. Now let's make a couple of simple local `POST` requests to this API with JSON data (using cURL syntax) (or [Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_post.jpg)):
+When `RESTarConfig.Init()` is called, RESTar will find the `Superhero` database class and register it as available over the REST API. This means that REST clients can send `GET`, `POST`, `PUT`, `PATCH` and `DELETE` requests to `<host>:8282/api/superhero` and interact with its content. To make a different set of methods available for a resource, we simply include a different set of methods in the `RESTarAttribute` constructor. RESTar can read and write **JSON** and **Excel**, so the bodies contained within these requests can be of either of these formats. Now let's make a simple local `POST` request to this API with JSON data (using cURL syntax) (or [Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_data_post.jpg)):
 
 ```
-curl 'localhost:8282/api/superhero' -d '{
-    "Name": "Batman (Bruce Wayne)",
+curl 'localhost:8282/api/superhero' -d '[{
+    "Name": "Wonder Woman",
+    "HasSecretIdentity": false,
+    "Gender": "Female",
+    "YearIntroduced": 1941
+},
+{
+    "Name": "Superman",
     "HasSecretIdentity": true,
     "Gender": "Male",
-    "YearIntroduced": 1939
-}'
-curl 'localhost:8282/api/superhero' -d '{
-    "Name": "Superman (Clark Kent)",
-    "HasSecretIdentity": true,
-    "Gender": "Male",
-    "YearIntroduced": 1986
-}'
+    "YearIntroduced": 1938
+}]'
 ```
 
 > RESTar will map properties from JSON to the .NET class automatically. We can configure this mapping by decorating properties with the `RESTarMemberAttribute` attribute, but for now – let's keep things simple.
@@ -77,24 +88,24 @@ And now, let's retrieve this data using a `GET` request ([Postman](https://githu
 curl 'localhost:8282/api/superhero//limit=2'
 Output:
 [{
-    "Name": "Batman (Bruce Wayne)",
-    "HasSecretIdentity": true,
-    "Gender": "Male",
-    "YearIntroduced": 1939,
-    "InsertedAt": "2018-02-04T14:41:50.9009688Z",
+    "Name": "Wonder Woman",
+    "HasSecretIdentity": false,
+    "Gender": "Female",
+    "YearIntroduced": 1941
+    "InsertedAt": "2018-08-08T18:31:50.1009688Z",
     "ObjectNo": 103464
 },
 {
-    "Name": "Aquaman (Arthur Curry)",
-    "HasSecretIdentity": false,
+    "Name": "Superman",
+    "HasSecretIdentity": true,
     "Gender": "Male",
-    "YearIntroduced": 1941,
-    "InsertedAt": "2018-02-04T14:41:50.9633607Z",
+    "YearIntroduced": 1938
+    "InsertedAt": "2018-08-08T18:31:50.1033607Z",
     "ObjectNo": 103468
 }]
 ```
 
-> The `InsertedAt` property of `Superhero` is read-only. It is included in `GET` request output, but cannot be set by remote clients. RESTar automatically includes the read-only Starcounter `ObjectNo` property for database resources.
+> The `InsertedAt` property of `Superhero` is read-only. The are included in `GET` request output, but cannot be set by remote clients. RESTar automatically includes the read-only Starcounter `ObjectNo` property for database resources.
 
 ## Exploring the parameters of `RESTarConfig.Init()`
 
@@ -110,7 +121,7 @@ static void Init(
     bool prettyPrint = true,
     ushort daysToSaveErrors = 30,
     LineEndings lineEndings = LineEndings.Windows,
-    IEnumerable<ResourceProvider> resourceProviders = null,
+    IEnumerable<EntityResourceProvider> entityResourceProviders = null,
     IEnumerable<IProtocolProvider> protocolProviders = null,
     IEnumerable<IContentTypeProvider> contentTypeProviders = null
 );
@@ -145,52 +156,48 @@ In most use cases, we want to apply some form of role-based access control to th
 </config>
 ```
 
-This configuration file specifies two api keys: `a-secure-admin-key` and `a-secure-user-key`. The first can perform all methods on all resources in the `RESTar`, `RESTar.Admin`, `RESTar.Dynamic` and `RESTarTutorial` namespaces, the latter which includes our `Superhero` resource. The second key, however, can only make `GET` requests to resources in the `RESTarTutorial` namespace. To enforce these access rights, we set the `requireApiKey` parameter to `true` in the call to `RESTarConfig.Init()` and provide the file path to the configuration file in the `configFilePath` parameter. Here is the same program as above, but now with role-based access control:
+This configuration file specifies two api keys: `a-secure-admin-key` and `a-secure-user-key`. The first can perform all methods on all resources in the `RESTar`, `RESTar.Admin`, `RESTar.Dynamic` and `RESTarTutorial` namespaces, the latter which includes our `Superhero` resource. The second key, however, can only make `GET` requests to resources in the `RESTarTutorial` namespace. To enforce these access rights, we set the `requireApiKey` parameter to `true` in the call to `RESTarConfig.Init()` and provide the file path to the configuration file in the `configFilePath` parameter. Here is the same application code as above, but now with role-based access control:
 
 ```csharp
-namespace RESTarTutorial
+public class TutorialApp
 {
-    using RESTar;
-    using Starcounter;
-    public class TutorialApp
+    public static void Main()
     {
-        public static void Main()
-        {
-            RESTarConfig.Init(
-                port: 8282,
-                uri: "/api",
-                requireApiKey: true,
-                configFilePath: Application.Current.WorkingDirectory + "/Config.xml"
-            );
-        }
+        RESTarConfig.Init
+        (
+            port: 8282,
+            uri: "/api",
+            requireApiKey: true,
+            configFilePath: Application.Current.WorkingDirectory + "/Config.xml"
+        );
     }
 }
 ```
 
 ## Non-starcounter resources
 
-In the example above, we saw a Starcounter database class working as a REST resource through RESTar. Starcounter database classes make for good examples, since most Starcounter developers are familiar with them, but RESTar itself is not limited to these classes. Any public non-static class can work as a RESTar resource class – as long as the developer can define the logic that is needed to support operations like `Select`, `Insert` and `Delete` that are used in REST requests. Say, for example, that we want a REST resource that is simply a transient aggregation of database data, that is generated when requested. To go with the example above, let's say we want a `SuperheroReport` class that we can make `GET` requests to: ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_report_get.jpg))
+In the example above, we saw a Starcounter database class working as a REST resource through RESTar. Starcounter database classes make for good examples, since most Starcounter developers are familiar with them, but RESTar itself is not limited to these classes. Any public non-static class can work as a RESTar resource class – as long as the developer can define the logic that is needed to support operations like `Select`, `Insert` and `Delete` that are used in REST requests. Say, for example, that we want a REST resource that is simply a transient aggregation of database data, that is generated when requested. To go with the example above, let's say we want a `SuperheroReport` class that we can make `GET` requests like this to: ([Postman](https://github.com/Mopedo/RESTar.Tutorial/blob/master/RESTarTutorial/Postman_report_get.jpg))
 
 ```
 curl "localhost:8282/api/superheroreport" -H "Authorization: apikey a-secure-user-key"
 Output:
 [{
-    "NumberOfSuperheroes": 167,
+    "NumberOfSuperheroes": 2,
     "FirstSuperheroInserted": {
-        "Name": "Batman (Bruce Wayne)",
-        "HasSecretIdentity": true,
-        "Gender": "Male",
-        "YearIntroduced": 1939,
-        "InsertedAt": "2018-02-04T01:16:27.6341808Z",
-        "ObjectNo": 103295
+        "Name": "Wonder Woman",
+        "HasSecretIdentity": false,
+        "Gender": "Female",
+        "YearIntroduced": 1941
+        "InsertedAt": "2018-08-08T18:31:50.1009688Z",
+        "ObjectNo": 103464
     },
     "LastSuperheroInserted": {
-        "Name": "Sersi (Earth-616)",
+        "Name": "Superman",
         "HasSecretIdentity": true,
-        "Gender": "Female",
-        "YearIntroduced": 1976,
-        "InsertedAt": "2018-02-04T01:16:27.9386776Z",
-        "ObjectNo": 103461
+        "Gender": "Male",
+        "YearIntroduced": 1938
+        "InsertedAt": "2018-08-08T18:31:50.1033607Z",
+        "ObjectNo": 103468
     }
 }]
 ```
