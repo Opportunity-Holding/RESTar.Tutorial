@@ -49,8 +49,8 @@
     <StartupObject>RESTarTutorial.TutorialApp</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dynamit, Version=0.1.44.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\Dynamit.0.1.44\lib\net452\Dynamit.dll</HintPath>
+    <Reference Include="Dynamit, Version=0.1.45.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\Dynamit.0.1.45\lib\net452\Dynamit.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus, Version=4.5.2.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
@@ -59,11 +59,11 @@
       <HintPath>..\..\..\RESTar\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="RESTar, Version=0.4.86.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\RESTar.0.4.86\lib\net452\RESTar.dll</HintPath>
+    <Reference Include="RESTar, Version=0.4.90.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\RESTar.0.4.90\lib\net452\RESTar.dll</HintPath>
     </Reference>
-    <Reference Include="RESTar.SQLite, Version=0.4.53.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\RESTar.SQLite.0.4.53\lib\net452\RESTar.SQLite.dll</HintPath>
+    <Reference Include="RESTar.SQLite, Version=0.4.57.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\RESTar.SQLite.0.4.57\lib\net452\RESTar.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

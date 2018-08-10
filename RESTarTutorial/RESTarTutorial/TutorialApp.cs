@@ -68,7 +68,7 @@ namespace RESTarTutorial
         public Superhero LastSuperheroInserted { get; private set; }
 
         /// <summary>
-        /// This method returns an IEnumerable of the resource type. RESTar will call this 
+        /// This method returns an IEnumerable of the resource type. RESTar will call this
         /// on GET requests and send the results back to the client as e.g. JSON.
         /// </summary>
         public IEnumerable<SuperheroReport> Select(IRequest<SuperheroReport> request)
@@ -94,21 +94,21 @@ namespace RESTarTutorial
     #region Tutorial 2
 
     /// <summary>
-    /// RESTar will generate an instance of this class when a client makes a GET request to /chatbot 
+    /// RESTar will generate an instance of this class when a client makes a GET request to /chatbot
     /// with a WebSocket handshake.
     /// </summary>
     [RESTar]
     public class Chatbot : ITerminal
     {
         /// <summary>
-        /// Each time this class is instantiated, an IWebSocket instance will be assigned to the 
-        /// WebSocket property. This object holds the WebSocket connection to the connected client. 
+        /// Each time this class is instantiated, an IWebSocket instance will be assigned to the
+        /// WebSocket property. This object holds the WebSocket connection to the connected client.
         /// We can, for example, send text to the client by making a call to WebSocket.SendText().
         /// </summary>
         public IWebSocket WebSocket { private get; set; }
 
         /// <summary>
-        /// This method is called when the WebSocket is opened towards this Chatbot instance. A perfect 
+        /// This method is called when the WebSocket is opened towards this Chatbot instance. A perfect
         /// time to send a welcome message.
         /// </summary>
         public void Open() => WebSocket.SendText(
@@ -127,7 +127,7 @@ namespace RESTarTutorial
         public bool SupportsBinaryInput { get; } = false;
 
         /// <summary>
-        /// This method defines the logic that is run when an incoming text message is received over the 
+        /// This method defines the logic that is run when an incoming text message is received over the
         /// WebSocket that is assigned to this terminal.
         /// </summary>
         public void HandleTextInput(string input)
@@ -149,7 +149,7 @@ namespace RESTarTutorial
         }
 
         /// <summary>
-        /// We still need to implement this method, but it is never called, since SupportsBinaryInput is 
+        /// We still need to implement this method, but it is never called, since SupportsBinaryInput is
         /// set to false.
         /// </summary>
         public void HandleBinaryInput(byte[] input) => throw new NotImplementedException();
@@ -185,14 +185,14 @@ namespace RESTarTutorial
         #endregion
 
         /// <summary>
-        /// If the terminal resource has additional resources tied to an instance, this is were we release 
+        /// If the terminal resource has additional resources tied to an instance, this is were we release
         /// them.
         /// </summary>
         public void Dispose() { }
     }
 
     /// <summary>
-    /// "ChatRoom" is an appropriate name for the resource from the client's perspective, even though 
+    /// "ChatRoom" is an appropriate name for the resource from the client's perspective, even though
     /// each instance of this resource will work more like a chat participant.
     /// </summary>
     [RESTar]
@@ -206,7 +206,7 @@ namespace RESTarTutorial
         private string _name;
 
         /// <summary>
-        /// The name of the connected chat room participant. To change this, we can write 
+        /// The name of the connected chat room participant. To change this, we can write
         /// #terminal {"Name": "new name"} while in the chat room.
         /// </summary>
         public string Name
@@ -247,7 +247,7 @@ namespace RESTarTutorial
         }
 
         /// <summary>
-        /// Creates a unique name for a participant, or deal with edge cases like a participant naming 
+        /// Creates a unique name for a participant, or deal with edge cases like a participant naming
         /// themselves nothing or "Chatbot".
         /// </summary>
         private static string GetUniqueName(string Name)
@@ -312,8 +312,8 @@ namespace RESTarTutorial
     {
         internal static void Setup()
         {
-            // First we delete all Superheroes from the database. Then we get the content from an included SQLite 
-            // database and build the Starcounter database from it. For more information on how to integrate SQLite 
+            // First we delete all Superheroes from the database. Then we get the content from an included SQLite
+            // database and build the Starcounter database from it. For more information on how to integrate SQLite
             // with RESTar, see the 'RESTar.SQLite' package on NuGet.
 
             Db.Transact(() => Db
