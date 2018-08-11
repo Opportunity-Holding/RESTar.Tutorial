@@ -13,6 +13,7 @@ using RESTar.Resources;
 using RESTar.Resources.Operations;
 using RESTar.SQLite;
 using RESTar.WebSockets;
+using static System.StringComparison;
 using static RESTar.Method;
 
 // ReSharper disable InheritdocConsiderUsage
@@ -132,7 +133,7 @@ namespace RESTarTutorial
         /// </summary>
         public void HandleTextInput(string input)
         {
-            if (string.Equals(input, "quit", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(input, "quit", OrdinalIgnoreCase))
             {
                 WebSocket.DirectToShell();
                 return;
@@ -144,8 +145,7 @@ namespace RESTarTutorial
 
         internal static string GetChatbotResponse(string input)
         {
-            return ChatbotAPI.GetResponse(input).result?.fulfillment?.speech
-                   ?? "I have no response to that. Sorry...";
+            return ChatbotAPI.GetResponse(input).result?.fulfillment?.speech ?? "I have no response to that. Sorry...";
         }
 
         /// <summary>
@@ -252,13 +252,13 @@ namespace RESTarTutorial
         /// </summary>
         private static string GetUniqueName(string Name)
         {
-            if (string.IsNullOrWhiteSpace(Name) || string.Equals(Name, "chatbot", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(Name) || string.Equals(Name, "chatbot", OrdinalIgnoreCase))
                 Name = "Chatter";
-            if (!Terminals.Any(c => string.Equals(c.Name, Name, StringComparison.OrdinalIgnoreCase)))
+            if (!Terminals.Any(c => string.Equals(c.Name, Name, OrdinalIgnoreCase)))
                 return Name;
             var modifier = 2;
             var tempName = $"{Name} {modifier}";
-            while (Terminals.Any(c => string.Equals(c.Name, tempName, StringComparison.OrdinalIgnoreCase)))
+            while (Terminals.Any(c => string.Equals(c.Name, tempName, OrdinalIgnoreCase)))
                 tempName = $"{Name} {modifier++}";
             return tempName;
         }
@@ -273,14 +273,14 @@ namespace RESTarTutorial
         {
             if (string.IsNullOrWhiteSpace(input))
                 return;
-            if (string.Equals(input, "quit", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(input, "quit", OrdinalIgnoreCase))
             {
                 WebSocket.DirectToShell();
                 return;
             }
 
             SendToAll($"> {Name}: {input}");
-            if (input.Length > 5 && input.StartsWith("@bot ", StringComparison.OrdinalIgnoreCase))
+            if (input.Length > 5 && input.StartsWith("@bot ", OrdinalIgnoreCase))
             {
                 var message = input.Split("@bot ")[1];
                 var response = Chatbot.GetChatbotResponse(message);
