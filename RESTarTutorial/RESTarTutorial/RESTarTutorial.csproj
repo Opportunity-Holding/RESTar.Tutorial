@@ -49,8 +49,8 @@
     <StartupObject>RESTarTutorial.TutorialApp</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dynamit, Version=0.1.45.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\Dynamit.0.1.45\lib\net452\Dynamit.dll</HintPath>
+    <Reference Include="Dynamit, Version=0.1.46.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\Dynamit.0.1.46\lib\net452\Dynamit.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus, Version=4.5.2.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
@@ -59,11 +59,11 @@
       <HintPath>..\..\..\RESTar\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="RESTar, Version=0.4.92.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\RESTar.0.4.92\lib\net452\RESTar.dll</HintPath>
+    <Reference Include="RESTar, Version=0.4.115.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\RESTar.0.4.115\lib\net452\RESTar.dll</HintPath>
     </Reference>
-    <Reference Include="RESTar.SQLite, Version=0.4.59.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\RESTar.SQLite.0.4.59\lib\net452\RESTar.SQLite.dll</HintPath>
+    <Reference Include="RESTar.SQLite, Version=0.4.78.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\RESTar.SQLite.0.4.78\lib\net452\RESTar.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -85,8 +85,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.108.0\lib\net451\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.109.1\lib\net451\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
@@ -132,12 +132,12 @@ net use R: \\mac\builds
 cd "$(ProjectDir)"
 starpack -p "$(ProjectFileName)" -c=release -o=R:\</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets')" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.1\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net451\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.109.1\build\net451\System.Data.SQLite.Core.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
