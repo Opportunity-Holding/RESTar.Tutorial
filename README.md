@@ -105,7 +105,7 @@ Output:
 }]
 ```
 
-> The `InsertedAt` property of `Superhero` is read-only. The are included in `GET` request output, but cannot be set by remote clients. RESTar automatically includes the read-only Starcounter `ObjectNo` property for database resources.
+> The `InsertedAt` property of `Superhero` is read-only. They are included in `GET` request output, but cannot be set by remote clients. RESTar automatically includes the read-only Starcounter `ObjectNo` property for database resources.
 
 ## Exploring the parameters of `RESTarConfig.Init()`
 
